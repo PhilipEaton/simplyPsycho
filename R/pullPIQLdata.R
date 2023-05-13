@@ -15,13 +15,13 @@
 #' PIQLdata$courses # Course data
 #' PIQLdata$answerkey # answer key
 
-pullPQLdata <- function() {
+pullPQLdata <- function(accessID, accessSecret) {
 ###############################################################################
 # Pull in data from AWS
 ###############################################################################
 Sys.setenv(
-  "AWS_ACCESS_KEY_ID" = "AKIA3HK7TAAACSRSO5PK",
-  "AWS_SECRET_ACCESS_KEY" = "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",
+  "AWS_ACCESS_KEY_ID" = accessID,
+  "AWS_SECRET_ACCESS_KEY" = accessSecret,
   "AWS_DEFAULT_REGION" = "us-west-2"
 )
 
