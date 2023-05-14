@@ -10,6 +10,8 @@
 #' @param lans.alpha Cutoff value for the LANS sparcification procedure. Default is set to
 #' 0.05, since this acts similar to a p-value.
 #'
+#' @param makePlot Generate plot or not.
+#'
 #' @return A plot of the LANS sparcified network for the given data.
 #'
 #' @export
@@ -22,7 +24,7 @@
 #'
 #' # Get LANS plot of data
 #' netA.lans.plot(temp.data$data.num, cor.type = 1)
-netA.lans.plot <- function (data.num, cor.type = 1, lans.alpha = 0.05) {
+netA.lans.plot <- function (data.num, cor.type = 1, lans.alpha = 0.05, makePlot = TRUE) {
 
   ##################
   #      Correlation matrix
@@ -74,12 +76,14 @@ netA.lans.plot <- function (data.num, cor.type = 1, lans.alpha = 0.05) {
                                        evcent = evcent(lansFiltered.network)$vector),3)
 
   # Plot filtered network
-  plot(lansFiltered.network,
-       vertex.size = 15,
-       vertex.label.cex = 0.8,
-       edge.width=abs(E(lansFiltered.network)$weight)*10,
-       edge.color = ifelse(E(lansFiltered.network)$weight > 0, "blue","red"),
-       main = paste0("LANS Filtered Network (alpha = ",lans.alpha,")"))
+  if (makePlot == TRUE) {
+    plot(lansFiltered.network,
+         vertex.size = 15,
+         vertex.label.cex = 0.8,
+         edge.width=abs(E(lansFiltered.network)$weight)*10,
+         edge.color = ifelse(E(lansFiltered.network)$weight > 0, "blue","red"),
+         main = paste0("LANS Filtered Network (alpha = ",lans.alpha,")"))
+  }
 
   thing.return <- list()
   thing.return$initial.density <- initial.density

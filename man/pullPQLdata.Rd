@@ -4,7 +4,7 @@
 \alias{pullPQLdata}
 \title{Pull PIQL data from AWS}
 \usage{
-pullPQLdata()
+pullPQLdata(accessID, accessSecret)
 }
 \value{
 A list of course data for the PIQL stored in AWS.

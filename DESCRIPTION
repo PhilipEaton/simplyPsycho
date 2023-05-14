@@ -13,3 +13,5 @@ Depends:
   igraph,
   mirt,
   tidyverse
+Imports:
+  hasseDiagram
