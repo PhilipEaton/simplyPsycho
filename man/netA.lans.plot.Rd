@@ -4,7 +4,7 @@
 \alias{netA.lans.plot}
 \title{Locally Adaptive Network Sparcification Plot}
 \usage{
-netA.lans.plot(data.num, cor.type = 1, lans.alpha = 0.05)
+netA.lans.plot(data.num, cor.type = 1, lans.alpha = 0.05, makePlot = TRUE)
 }
 \arguments{
 \item{data.num}{An nS by nQ matrix or data frame of a dichotomous graded (0 or 1) sample,
@@ -14,6 +14,8 @@ where nS is the number of students in the sample and nQ is the number of questio
 
 \item{lans.alpha}{Cutoff value for the LANS sparcification procedure. Default is set to
 0.05, since this acts similar to a p-value.}
+
+\item{makePlot}{Generate plot or not.}
 }
 \value{
 A plot of the LANS sparcified network for the given data.
