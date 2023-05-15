@@ -15,4 +15,3 @@ Depends:
   tidyverse
 Imports:
   hasseDiagram
-  Rgraphviz
