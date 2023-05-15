@@ -49,6 +49,10 @@
 #' irt.Plot(ita.data.3$model, labs = labs)
 
 ita.Plot <- function(current.tree, labs = NULL) {
+  # Check that the plotting package is installed. IF not, then install it.
+  if ( ("Rgraphviz" %in% rownames(installed.packages())) == FALSE ) {
+       BiocManager::install("Rgraphviz")
+  }
   if (is.null(labs)) {
     nQ <- length(unique(c(current.tree[,1], current.tree[,2])))
   } else {
