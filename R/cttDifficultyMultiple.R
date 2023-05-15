@@ -99,19 +99,34 @@ cttDiff.mult <- function (data, booted = FALSE, nRuns = 100, plotBarChart = FALS
     }
   }
 
+  error.bar <- function(x, y, upper, lower=upper, length=0.05,...){
+    arrows(x,y+upper, x, y-lower, angle=90, code=3, length=length, ...)
+  }
+
   if (plotBarChart == TRUE) {
     if (length(thing.return.master) == 1) {
-      barplot(thing.return.master[[1]][1,], col = c("darkblue"),
+      temp <- barplot(thing.return.master[[1]][1,], col = c("darkblue"),
               ylim = c(0,1))
+      if (booted == TRUE) {
+        error.bar(temp, thing.return.master[[1]][1,], thing.return.master[[1]][2,])
+      }
     }
     if (length(thing.return.master) > 1) {
       plot.thing <- thing.return.master[[1]][1,]
+      if (booted == TRUE) {
+        plot.thing.eb <- thing.return.master[[1]][2,]
+      }
       for (mm in 2:length(thing.return.master)) {
         plot.thing <- rbind(plot.thing, thing.return.master[[mm]][1,])
+        if (booted == TRUE) {
+          plot.thing.eb <- rbind(plot.thing.eb, thing.return.master[[mm]][2,])
+        }
       }
-      #c("darkblue","red")
-      barplot(plot.thing, col = 1:length(thing.return.master), beside = TRUE,
+      temp <- barplot(plot.thing, col = c(1:length(thing.return.master)) + 1, beside = TRUE,
               ylim = c(0,1))
+      if (booted == TRUE) {
+        error.bar(temp, as.matrix(plot.thing), as.matrix(plot.thing.eb))
+      }
     }
   }
 
