@@ -14,7 +14,7 @@
 #' PIQLdata <- pullPQLdata()
 #' PIQLdata$courses # Course data
 #' PIQLdata$answerkey # answer key
-pullPQLdata <- function(accessID, accessSecret) {
+pullPIQLdata <- function(accessID, accessSecret) {
 ###############################################################################
 # Pull in data from AWS
 ###############################################################################
@@ -104,7 +104,9 @@ for(c in 1:length(courses)){
 
 thing.return <- list()
 thing.return$courses <- dataFilesByCourse$V1
-thing.return$answerkey <- answerkey
+thing.return$answerkey <- unlist(as.vector(answerkey))
+thing.return$courseList <- courses
+thing.return$term <- term
 return(thing.return)
 ###############################################################################
 # End data retrieval here

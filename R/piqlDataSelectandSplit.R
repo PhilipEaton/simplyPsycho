@@ -39,7 +39,7 @@
 piql.data.select <- function(pulled.PIQL.data, courses = 1, numBlanks.allowed = 0) {
   PIQL.data <- pulled.PIQL.data$courses
   answerKey <- pulled.PIQL.data$answerkey
-  courseList <- c( 121, 122, 123, 141, 142, 143, 224, 225, 226, 321, 322, 323, 325 )
+  courseList <- pulled.PIQL.data$courseList
   for (cc in 1:length(courses)) {
     if (courses[cc] > 100) {
       if (sum(courses[cc] == courseList) == 0 )  {
