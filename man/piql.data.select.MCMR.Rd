@@ -4,16 +4,16 @@
 \alias{piql.data.select.MCMR}
 \title{Select specific course from the pulled PIQL data.}
 \usage{
-piql.data.select.MCMR(pulled.PIQL.data, course = 1, numBlanks.allowed = 0)
+piql.data.select.MCMR(pulled.PIQL.data, courses = 1, numBlanks.allowed = 0)
 }
 \arguments{
 \item{pulled.PIQL.data}{Output from pullPQLdata}
 
+\item{numBlanks.allowed}{(default = 0) Number of blanks allowed in the resulting data.}
+
 \item{course}{(Default = 1 = 121) Course number (1 = 121, 2 = 122, 3 = 123, etc.) or position in course list:
 
 Course: 121, 122, 123, 141, 142, 143, 224, 225, 226, 321, 322, 323, 325}
-
-\item{numBlanks.allowed}{(default = 0) Number of blanks allowed in the resulting data.}
 }
 \value{
 A list of course data for the PIQL stored in AWS.
