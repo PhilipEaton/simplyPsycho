@@ -68,14 +68,14 @@ netA.Community.Memberships <- function (data.num, cor.type = 1, lans.alpha = 0.0
     #na.edge.boot <- polychoric(data.num)$rho
     #na.edge.data <- partial.r(data.num)
     diag(na.edge.boot) <- 0 # remove self connections
-    graph.boot <- graph.adjacency(abs(na.edge.boot), weighted = TRUE, mode = "max")
+    graph.boot <- igraph::graph.adjacency(abs(na.edge.boot), weighted = TRUE, mode = "max")
     lansFiltered.boot <- netA.Filter.LANS(graph.boot, alpha)
     # Calculate and store memberships
-    membership.booted[ii,,1] <-  cluster_fast_greedy(lansFiltered.boot, weights = abs(E(lansFiltered.boot)$weight))$membership
-    membership.booted[ii,,2] <-  cluster_optimal(lansFiltered.boot, weights = abs(E(lansFiltered.boot)$weight))$membership
-    membership.booted[ii,,3] <-  cluster_walktrap(lansFiltered.boot, weights = abs(E(lansFiltered.boot)$weight))$membership
-    membership.booted[ii,,4] <-  cluster_label_prop(lansFiltered.boot, weights = abs(E(lansFiltered.boot)$weight))$membership
-    membership.booted[ii,,5] <-  cluster_leiden(lansFiltered.boot, weights = abs(E(lansFiltered.boot)$weight))$membership
+    membership.booted[ii,,1] <-  igraph::cluster_fast_greedy(lansFiltered.boot, weights = abs(igraph::E(lansFiltered.boot)$weight))$membership
+    membership.booted[ii,,2] <-  igraph::cluster_optimal(lansFiltered.boot, weights = abs(igraph::E(lansFiltered.boot)$weight))$membership
+    membership.booted[ii,,3] <-  igraph::cluster_walktrap(lansFiltered.boot, weights = abs(igraph::E(lansFiltered.boot)$weight))$membership
+    membership.booted[ii,,4] <-  igraph::cluster_label_prop(lansFiltered.boot, weights = abs(igraph::E(lansFiltered.boot)$weight))$membership
+    membership.booted[ii,,5] <-  igraph::cluster_leiden(lansFiltered.boot, weights = abs(igraph::E(lansFiltered.boot)$weight))$membership
   }
   # Format return
   thing.return <- list()

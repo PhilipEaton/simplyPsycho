@@ -21,8 +21,8 @@
 #' netA.lans.plot(temp.data$data.num, cor.type = 1)
 netA.Filter.LANS <- function(initial.network, lans.alpha) {
   # Get the weighted adjacency matrix
-  LANS.network.edgematrix <- data.matrix(get.adjacency(initial.network, attr = "weight"))
-  LANS.network.degree <- degree(initial.network)
+  LANS.network.edgematrix <- data.matrix(igraph::get.adjacency(initial.network, attr = "weight"))
+  LANS.network.degree <- igraph::degree(initial.network)
   LANS.network.rowSum <- rowSums(abs(LANS.network.edgematrix))
   disparity.filter.marix <- array(0, dim = c(nrow(LANS.network.edgematrix),ncol(LANS.network.edgematrix)))
   Fstat.matrix <- array(0, dim = c(nrow(LANS.network.edgematrix),ncol(LANS.network.edgematrix)))
@@ -39,6 +39,6 @@ netA.Filter.LANS <- function(initial.network, lans.alpha) {
   F.test.mat <- Fstat.matrix > (1 - lans.alpha)
   F.test.mat.sym <- F.test.mat + t(F.test.mat)
   edgeWeights <- LANS.network.edgematrix * (F.test.mat.sym > 0)
-  lansFiltered.network <- graph_from_adjacency_matrix(edgeWeights, mode = "undirected", weighted = TRUE)
-  return(lansFiltered.network) # Returns the sparcfied undirected network.
+  lansFiltered.network <- igraph::graph_from_adjacency_matrix(edgeWeights, mode = "undirected", weighted = TRUE)
+  return(lansFiltered.network)
 }

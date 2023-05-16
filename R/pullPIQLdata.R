@@ -14,7 +14,6 @@
 #' PIQLdata <- pullPQLdata()
 #' PIQLdata$courses # Course data
 #' PIQLdata$answerkey # answer key
-
 pullPQLdata <- function(accessID, accessSecret) {
 ###############################################################################
 # Pull in data from AWS
@@ -26,7 +25,7 @@ Sys.setenv(
 )
 
 dataDirectory <- "piqlgerqndata"
-dataContents <- get_bucket_df(bucket = dataDirectory, region = "us-west-2")
+dataContents <- aws.s3::get_bucket_df(bucket = dataDirectory, region = "us-west-2")
 
 ### ------------------------------------------
 ### -------------- EDIT HERE!! ---------------
@@ -39,13 +38,13 @@ courses <- c(121,122,123,141,142,143,224,225,226,321,322,323,325)
 ## ---------- Get the data and score it ------------------
 ## -------------------------------------------------------
 ## set up the answer key
-answers <- s3read_using(FUN = read.csv, bucket = dataDirectory, object = "piqlanswerkey.csv")
+answers <- aws.s3::s3read_using(FUN = read.csv, bucket = dataDirectory, object = "piqlanswerkey.csv")
 if(length(answers) == 1){
   answerkey <- read_csv(answers, na = c("N", "", " ", "n", "NA", "999"))
   answerkey[] <- lapply(answerkey, gsub, pattern=',', replacement='') ## Get rid of commas and spaces in the answerkey
   answerkey[] <- lapply(answerkey, gsub, pattern=' ', replacement='')
 } else{
-  answerkey <- as_tibble(matrix(answers, nrow = 1))
+  answerkey <- tibble::as_tibble(matrix(answers, nrow = 1))
 }
 questionNumbers <- c(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20) ## handwritten because I'm lazy and the test is static.
 qCols <- c(3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22)
@@ -63,18 +62,18 @@ dataFilesByCourse <- as.data.frame(matrix(data.frame(),nrow=length(courses),ncol
 ## pull the data, clean it, and score it
 for(c in 1:length(courses)){
   for(df in 1:length(term)){
-    if(sum(str_detect(dataContents$Key, paste0(term[df],"_",courses[c],"_PIQL_PEGID.csv")))>0){
+    if(sum(stringr::str_detect(dataContents$Key, paste0(term[df],"_",courses[c],"_PIQL_PEGID.csv")))>0){
       print(paste0(term[df],"_",courses[c],"_PIQL_PEGID.csv yes!"))
-      dataFiles[[df, c]] <- s3read_using(FUN = read.csv, bucket = dataDirectory, object = paste0(term[df],"_",courses[c],"_PIQL_PEGID.csv"), na.strings = c("N","", " ", "n", "NA", "999", "777"))
-      dataFiles[[df,c]] <- mutate(dataFiles[[df,c]], t = term[df])
+      dataFiles[[df, c]] <- aws.s3::s3read_using(FUN = read.csv, bucket = dataDirectory, object = paste0(term[df],"_",courses[c],"_PIQL_PEGID.csv"), na.strings = c("N","", " ", "n", "NA", "999", "777"))
+      dataFiles[[df,c]] <- dplyr::mutate(dataFiles[[df,c]], t = term[df])
       dataFiles[[df, c]][] <- lapply(dataFiles[[df, c]], gsub, pattern=',', replacement='') ## Remove any commas in the responses.
       dataFiles[[df, c]][] <- lapply(dataFiles[[df, c]], gsub, pattern=' ', replacement='') ## Remove any spaces in the responses.
-      dataFiles[[df, c]] <- mutate(dataFiles[[df, c]], score = 0, blanks = 0) ## Add columns to be able to determine each student's total score and the number of questions left blank.
+      dataFiles[[df, c]] <- dplyr::mutate(dataFiles[[df, c]], score = 0, blanks = 0) ## Add columns to be able to determine each student's total score and the number of questions left blank.
       for(i in 1:nrow(dataFiles[[df,c]])){
         dataFiles[[df,c]]$score[i] <- length(which(dataFiles[[df,c]][i,qCols] == answerkey))
         dataFiles[[df,c]]$blanks[i] <- length(which(is.na(dataFiles[[df,c]][i,qCols])))
       }
-      dataFiles[[df,c]] <- mutate(dataFiles[[df,c]], percent = score/numQs * 100)
+      dataFiles[[df,c]] <- dplyr::mutate(dataFiles[[df,c]], percent = score/numQs * 100)
     }
   }
 }

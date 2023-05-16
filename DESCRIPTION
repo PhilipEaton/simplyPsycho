@@ -8,10 +8,14 @@ Description: Simple functions for doing psychometric analysis of assessment data
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 7.2.3
-Depends: 
+Imports:
   aws.s3,
+  dplyr,
+  hasseDiagram,
   igraph,
   mirt,
-  tidyverse
-Imports:
-  hasseDiagram
+  psych,
+  stringr,
+  tidyverse,
+  tibble
+  

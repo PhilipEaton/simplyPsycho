@@ -52,7 +52,7 @@ netA.lans.plot <- function (data.num, cor.type = 1, lans.alpha = 0.05, makePlot 
     na.edge.data <- psych::partial.r(data.num)
   }
   diag(na.edge.data) <- 0 # remove self connections
-  initial.network <- graph.adjacency(abs(na.edge.data), weighted = TRUE, mode = "max")
+  initial.network <- igraph::graph.adjacency(abs(na.edge.data), weighted = TRUE, mode = "max")
 
   #################
   # LANS Filtering
@@ -66,22 +66,22 @@ netA.lans.plot <- function (data.num, cor.type = 1, lans.alpha = 0.05, makePlot 
   # Check how thinned out the graph is after LANS filtering.
   ## Density = 1 means all connections possible are in the graph.
   ## Density = 0.20 means only 20% of all possible connections are in the graph.
-  initial.density <- graph.density(initial.network) # the network before LANS filtering
-  lans.density <- graph.density(lansFiltered.network) # the network after LANS filtering
+  initial.density <- igraph::graph.density(initial.network) # the network before LANS filtering
+  lans.density <- igraph::graph.density(lansFiltered.network) # the network after LANS filtering
 
   # Get and display all the measures of centrality for the LANS filtered network
-  centrality.table <- round(data.frame(degree = degree(lansFiltered.network),
-                                       closeness =  closeness(lansFiltered.network),
-                                       betweenness =  betweenness(lansFiltered.network),
-                                       evcent = evcent(lansFiltered.network)$vector),3)
+  centrality.table <- round(data.frame(degree = igraph::degree(lansFiltered.network),
+                                       closeness =  igraph::closeness(lansFiltered.network),
+                                       betweenness =  igraph::betweenness(lansFiltered.network),
+                                       evcent = igraph::evcent(lansFiltered.network)$vector),3)
 
   # Plot filtered network
   if (makePlot == TRUE) {
     plot(lansFiltered.network,
          vertex.size = 15,
          vertex.label.cex = 0.8,
-         edge.width=abs(E(lansFiltered.network)$weight)*10,
-         edge.color = ifelse(E(lansFiltered.network)$weight > 0, "blue","red"),
+         edge.width=abs(igraph::E(lansFiltered.network)$weight)*10,
+         edge.color = ifelse(igraph::E(lansFiltered.network)$weight > 0, "blue","red"),
          main = paste0("LANS Filtered Network (alpha = ",lans.alpha,")"))
   }
 
