@@ -10,6 +10,7 @@ LazyData: true
 RoxygenNote: 7.2.3
 Imports:
   aws.s3,
+  BiocManager,
   dplyr,
   hasseDiagram,
   igraph,
