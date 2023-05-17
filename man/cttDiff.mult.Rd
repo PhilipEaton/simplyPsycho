@@ -48,4 +48,5 @@ cttDiff.mult(data.num, booted = TRUE)
 
 # Booted using 1000 random samples by manually setting nRuns
 cttDiff.mult(data.num, booted = TRUE, nRuns = 1000)
+
 }

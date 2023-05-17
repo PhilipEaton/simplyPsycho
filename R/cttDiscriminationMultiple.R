@@ -31,7 +31,7 @@
 #'
 #' @examples
 #' # Pull in PIQL data from AWS and get some course data.
-#' PIQLdata <- pullPQLdata()
+#' PIQLdata <- pullPIQLdata()
 #' temp.piql.data <- PIQLdata$courses
 #' data.num <- temp.data$data.num
 #'

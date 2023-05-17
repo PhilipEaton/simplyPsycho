@@ -11,7 +11,7 @@
 #'
 #' @examples
 #' # Pull in PIQL data from AWS and get some course data.
-#' PIQLdata <- pullPQLdata()
+#' PIQLdata <- pullPIQLdata()
 #' PIQLdata$courses # Course data
 #' PIQLdata$answerkey # answer key
 pullPIQLdata <- function(accessID, accessSecret) {

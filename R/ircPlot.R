@@ -1,10 +1,25 @@
-# CTT Item Response Curve Generator with bootstrapping for error estimation:
-#
-# Philip Eaton
-#
-#
-
-# Generate plot for IRC of question qq
+#' Item Response Curve plotter:
+#'
+#' @description Plots the result of irc.get().
+#'
+#' @param irc.data Output from irc.get().
+#'
+#' @param qq Question number you would like plotted.
+#'
+#' @return IRC plot for the requested item using the given irc.get() output.
+#'
+#' @export
+#'
+#' @examples
+#' # Pull in PIQL data from AWS and get some course data.
+#' PIQLdata <- pullPIQLdata()
+#' temp.piql.data <- PIQLdata$courses
+#' data.alpha <- temp.data$data.alpha
+#' data.num <- temp.data$data.num
+#'
+#' # get irc data and plot item 2
+#' irc.data <- irc.get(data.alpha, data.num)
+#' irc.plot(irc.data, 2)
 irc.plot <- function(irc.data, qq) {
   Nq <- nrow(irc.data[1,,])
   irc.data[irc.data==0] <- NA

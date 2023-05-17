@@ -24,7 +24,7 @@
 #'
 #' @examples
 #' # Pull in PIQL data from AWS and get some course data.
-#' PIQLdata <- pullPQLdata()
+#' PIQLdata <- pullPIQLdata()
 #'
 #' # Get answerkey
 #' answerKey <- PIQLdata$answerkey
