@@ -16,6 +16,7 @@ Imports:
   hasseDiagram,
   igraph,
   mirt,
+  multimode,
   psych,
   stringr,
   tidyverse,
