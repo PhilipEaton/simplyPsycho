@@ -2,13 +2,17 @@
 % Please edit documentation in R/cttCronbachAlpha.R
 \name{cttCronbachAlpha}
 \alias{cttCronbachAlpha}
-\title{CTT Cronbach's Alpha:}
+\title{CTT Cronbach's Alpha (of multiple courses) with bootstrapping for error estimation:}
 \usage{
 cttCronbachAlpha(data, booted = FALSE, nRuns = 100)
 }
 \arguments{
-\item{data}{An nS by nQ matrix or data frame of a dichotomous graded (0 or 1) sample,
-where nS is the number of students in the sample and nQ is the number of questions.}
+\item{data}{Can be:
+
+1) An nS by nQ matrix or data frame of a dichotomous graded (0 or 1) sample,
+where nS is the number of students in the sample and nQ is the number of questions.
+
+2) The output of piql.data.select() for one or multiple courses.}
 
 \item{booted}{Logical (default = FALSE). FALSE means no bootstrapping will be
 performed. TRUE turns on the bootstrapping feature.}
@@ -24,12 +28,12 @@ standard deviation Cronbach's Alpha values calculated from nRuns randomly sample
 with replacement data sets from the given sample.
 }
 \description{
-Calculate Cronbach's Alpha for an assessment from sample data..
+Calculate Cronbach's Alpha for an assessment from sample data.
 }
 \examples{
 # Pull in PIQL data from AWS and get some course data.
 PIQLdata <- pullPIQLdata()
-temp.piql.data <- PIQLdata$courses
+temp.data <- piql.data.select(PIQLdata, course = 2, numBlanks.allowed = 0)
 data.num <- temp.data$data.num
 
 # Straight Cronbach's Alpha

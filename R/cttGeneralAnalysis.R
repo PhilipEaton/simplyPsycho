@@ -52,13 +52,13 @@ cttGeneralAnalysis <- function (data, perc = 0.27, booted = FALSE, nRuns = 100, 
     nQ <- ncol(data)
     thing.return <- list()
     # Get Cronbach's Alpha
-    thing.return$cronbahAlpha <- as.data.frame(cttCronbachAlpha(data, booted, nRuns))
+    thing.return$cronbahAlpha <- as.data.frame(cttCronbachAlpha(data, booted, nRuns)[[1]])
     # Get item point-biserial
-    thing.return$pointBi <- cttpointBiserial(data, booted, nRuns)
+    thing.return$pointBi <- cttpointBiserial(data, booted, nRuns)[[1]]
     # Get item difficulty
-    thing.return$difficulty <- cttDiff(data, booted, nRuns)
+    thing.return$difficulty <- cttDifficulty(data, booted, nRuns)[[1]]
     # Get item point-biserial
-    thing.return$discrimination <- cttDisc(data, perc, booted, nRuns)
+    thing.return$discrimination <- cttDiscrimination(data, perc, booted, nRuns)[[1]]
 
     # Plotting
     if (plotBarChart == TRUE) {

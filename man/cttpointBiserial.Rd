@@ -4,11 +4,15 @@
 \alias{cttpointBiserial}
 \title{CTT Point-biserial:}
 \usage{
-cttpointBiserial(data, booted = FALSE, nRuns = 100)
+cttpointBiserial(data, booted = FALSE, nRuns = 100, plotBarChart = FALSE)
 }
 \arguments{
-\item{data}{An nS by nQ matrix or data frame of a dichotomous graded (0 or 1) sample,
-where nS is the number of students in the sample and nQ is the number of questions.}
+\item{data}{Can be either
+
+1) An nS by nQ matrix or data frame of a dichotomous graded (0 or 1) sample,
+where nS is the number of students in the sample and nQ is the number of questions,
+
+2) The output of piql.data.select with one or multiple courses selected.}
 
 \item{booted}{Logical (default = FALSE). FALSE means no bootstrapping will be
 performed. TRUE turns on the bootstrapping feature.}
@@ -16,6 +20,9 @@ performed. TRUE turns on the bootstrapping feature.}
 \item{nRuns}{Number of random samples to use in the bootstrapping (default = 100).
 For publications it is recommended that 10,000 runs be performed since sample
 error goes as 1/sqrt(nRuns).}
+
+\item{plotBarChart}{(Default = FALSE). Generate barchart. If bootstrapping was
+performed, then error bars wll be automatically added (+- 1 standard deviation).}
 }
 \value{
 Point-biserial correlation between the total score (with focus item removed)
@@ -30,9 +37,16 @@ is poor, then this could be an indication that the assessment is multidimensiona
 \examples{
 # Pull in PIQL data from AWS and get some course data.
 PIQLdata <- pullPIQLdata()
-temp.piql.data <- PIQLdata$courses
+temp.data <- piql.data.select(PIQLdata, course = 2, numBlanks.allowed = 0)
 data.num <- temp.data$data.num
 
-# Point-biserial
-pointBiserial(data.num)
+# Straight item difficulty.
+cttpointBiserial(data.num)
+
+# Booted using 100 random samples (default)
+cttpointBiserial(data.num, booted = TRUE)
+
+# Booted using 1000 random samples by manually setting nRuns
+cttpointBiserial(data.num, booted = TRUE, nRuns = 1000)
+
 }
