@@ -55,7 +55,7 @@ cttCronbachAlpha <- function(data, booted = FALSE, nRuns = 100){
     # St. Dev. for each item across all runs
     cronbach.alpha.sd <- sd(cronAlpha.booted)
     # Format return
-    thing.return <- data.frame(alphaMean = cronbach.alpha.mn, AlphaStDev = cronbach.alpha.sd)
+    thing.return <- t(data.frame(alphaMean = cronbach.alpha.mn, alphaStDev = cronbach.alpha.sd))
     return(thing.return)
   }
 
