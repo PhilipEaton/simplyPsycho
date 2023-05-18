@@ -20,7 +20,7 @@ with error bars for a specified item.
 }
 \examples{
 # Pull in PIQL data from AWS and get some course data.
-PIQLdata <- pullPQLdata()
+PIQLdata <- pullPIQLdata()
 temp.piql.data <- PIQLdata$courses
 data.alpha <- temp.data$data.alpha
 data.num <- temp.data$data.num

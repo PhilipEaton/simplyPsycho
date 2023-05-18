@@ -30,6 +30,7 @@ the correct MCMR options marked 1 if they were selected and 0 if they were not.
 }
 \examples{
 # Get PIQL data
+PIQLdata <- pullPIQLdata()
 temp.data <- piql.data.select.MCMR(PIQLdata, course = 1)
 data.alpha.MCMR <- temp.data$data.alpha
 data.num.MCMR <- temp.data$data.num
