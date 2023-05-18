@@ -1,6 +1,7 @@
 #' Select specific course from the pulled PIQL data.
 #'
-#' @description Selects a specific course from the pulled PIQL data.
+#' @description Selects a specific course from the pulled PIQL data and separates
+#' the correct MCMR options marked 1 if they were selected and 0 if they were not.
 #'
 #' @param pulled.PIQL.data Output from pullPQLdata
 #'
@@ -8,7 +9,13 @@
 #'
 #' Course: 121, 122, 123, 141, 142, 143, 224, 225, 226, 321, 322, 323, 325
 #'
-#' *Can be a list of courses.*
+#' @param MCMR.grading (Default = "Dichotomous") If undefined, then MCMR items will be graded dichotomously.
+#'
+#' If "Selected", then selected = 1 and not selected = 0 for correct options on
+#' the MCMR items will be performed.
+#'
+#' If "FourScale", then MCMR items will be graded o the 4 scale:
+#' (0 = completely incorrect, 1 = correct and incorrect, 2 = some correct, 3 = completely correct)
 #'
 #' @param numBlanks.allowed (default = 0) Number of blanks allowed in the resulting data.
 #'
@@ -23,20 +30,18 @@
 #' @export
 #'
 #' @examples
-#' # Pull in PIQL data from AWS and get some course data.
+#' # Get PIQL data
 #' PIQLdata <- pullPIQLdata()
-#'
-#' # Get answerkey
-#' answerKey <- PIQLdata$answerkey
-#'
-#' # Pull course data and split into alpha and numerical variables
-#' temp.data <- piql.data.select(PIQLdata, course = 1)
-#' data.alpha <- temp.data$data.alpha
-#' data.num <- temp.data$data.num
-#'
+#' temp.data <- piql.data.select.MCMR(PIQLdata, course = 1)
+#' data.alpha.MCMR <- temp.data$data.alpha
+#' data.num.MCMR <- temp.data$data.num
 #' # Check number of student removed. Should be less than 10%.
 #' temp.data$nS.details
-piql.data.select <- function(pulled.PIQL.data, courses = 1, numBlanks.allowed = 0) {
+#'
+pulled.PIQL.data <- PIQLdata
+MCMR.grading = "Dichotomous"
+
+piql.data.select <- function(pulled.PIQL.data, MCMR.grading = "Dichotomous", courses = 1, numBlanks.allowed = 0) {
   PIQL.data <- pulled.PIQL.data$courses
   answerKey <- pulled.PIQL.data$answerkey
   courseList <- pulled.PIQL.data$courseList
@@ -72,17 +77,83 @@ piql.data.select <- function(pulled.PIQL.data, courses = 1, numBlanks.allowed = 
     ## handle MCMR items well
     data.alpha <- working.data.noBlanks[,substr(colnames(working.data.noBlanks),1,1) == "Q"]
     answers <- answerKey
-    data.num <- array(NA, dim = c(nrow(data.alpha), ncol(data.alpha)))
-    for (ii in 1:nrow(data.num)) {
-      data.num[ii,] <- as.numeric(data.alpha[ii,] == answers)
+
+
+    ##########################################
+    # Extract question information and grade single response questions.
+    data.num.SR <- array(NA, dim = c(nrow(data.alpha), 14)) # Hard coded to the PIQLs number of SR questions
+    colnames(data.num.SR) <- paste0("Q",c(1:ncol(data.num.SR)))
+    for (ii in 1:nrow(data.num.SR)) {
+      data.num.SR[ii,] <- as.numeric(data.alpha[ii,1:14] == answers[1:14])
     }
+    ##########################################
+
+    #########################################
+    # MCMR Data
+    mcmr.data.alph <- data.alpha[,15:20]
+    mcmr.answers <- unlist((answers[15:20]))
+    nMCMR <- 6
+    if (MCMR.grading == "Selected") {
+      ##########################################
+      # Extract question information and store correct response selection for
+      ## MCMR items.
+      #
+      ## I tried to make this as general as I could. I know there are more efficient
+      ## ways of doing this, but they would be less general. I want this code to be
+      ## adaptable for application to the GERKIN and what not.
+
+      # First build column names
+      mcmr.names <- c()
+      for (qq in 1:nMCMR) {
+        cur.ans <- unlist(strsplit(mcmr.answers[qq], split = ""))
+        for (oo in 1:length(cur.ans)) {
+          mcmr.names <- c(mcmr.names, paste0("Q",qq+ncol(data.num.SR),".",cur.ans[oo]))
+        }
+      }
+      data.num.MCMR <- array(NA, dim = c(nrow(data.alpha), length(mcmr.names)))
+      colnames(data.num.MCMR) <- mcmr.names
+      for (ss in 1:nrow(data.alpha)) {
+        num.ans <- 0
+        for (qq in 1:nMCMR) {
+          cur.ans <- unlist(strsplit(mcmr.answers[qq], split = ""))
+          for (oo in 1:length(cur.ans)) {
+            data.num.MCMR[ss,(num.ans+oo)] <- as.numeric(grepl(cur.ans[oo], mcmr.data.alph[ss,qq]))
+          }
+          num.ans <- num.ans + length(cur.ans)
+        }
+      }
+    } else if (MCMR.grading == "FourScale") {
+      data.num.MCMR <- array(NA, dim = c(nrow(data.alpha), nMCMR))
+      for (qq in 1:nMCMR) {
+        chars.ans <- nchar(mcmr.answers[qq])
+        for (ss in 1:final.nS) {
+          chars.stud <- nchar(mcmr.data.alph[ss,qq])
+          chars.stud.in.ans <- sum(!is.na(match(unlist(strsplit(mcmr.answers[qq], split = "")),unlist(strsplit(mcmr.data.alph[ss,qq], split = "")))))
+          #if (sum(is.na(chars.stud.in.ans))>0) {chars.stud.in.ans <- 0}
+          if (chars.stud.in.ans == 0) {data.num.MCMR[ss,qq] = 0
+          } else if (chars.ans == chars.stud) {data.num.MCMR[ss,qq] = 3
+          } else if (chars.stud == chars.stud.in.ans) {data.num.MCMR[ss,qq] = 2
+          } else {data.num.MCMR[ss,qq] = 1}
+        }
+      }
+      colnames(data.num.MCMR) <- paste0("Q",c(15:20))
+    } else {
+       data.num.MCMR <- array(NA, dim = c(nrow(data.alpha), nMCMR))
+       for (ss in 1:final.nS) {
+         data.num.MCMR[ss,] <- as.numeric(mcmr.data.alph[ss,] == mcmr.answers)
+       }
+      colnames(data.num.MCMR) <- paste0("Q",c(15:20))
+    }
+    # Combine SR and MCMR data
+    data.num <- cbind(data.num.SR,data.num.MCMR)
     # Give names to questions
     colnames(data.alpha) <- paste0("Q",c(1:ncol(data.alpha)))
-    colnames(data.num) <- paste0("Q",c(1:ncol(data.num)))
     # Number of student details.
     nS.details <- data.frame(nS.initial = initial.nS,
                              nS.final = final.nS,
                              nS.lost.perc = (initial.nS-final.nS)/initial.nS)
+
+
     # Format return
     thing.return[[3*cc - 2]] <- data.alpha
     thing.return[[3*cc - 1]] <- data.num
@@ -95,6 +166,4 @@ piql.data.select <- function(pulled.PIQL.data, courses = 1, numBlanks.allowed = 
   names(thing.return) <- thing.names
   return(thing.return)
 }
-
-
 
