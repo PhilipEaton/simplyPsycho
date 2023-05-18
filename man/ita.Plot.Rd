@@ -20,7 +20,7 @@ Creates a plot given a ITA tree
 \examples{
 # Get PIQL data
 PIQLdata <- pullPIQLdata()
-temp.data <- piql.data.select.MCMR(PIQLdata, course = 1)
+temp.data <- piql.data.select(PIQLdata, MCMR.grading = "Selected", course = 1)
 data.alpha.MCMR <- temp.data$data.alpha
 data.num.MCMR <- temp.data$data.num
 # Check number of student removed. Should be less than 10\%.

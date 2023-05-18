@@ -27,7 +27,7 @@
 #' @examples
 #' # Get PIQL data
 #' PIQLdata <- pullPIQLdata()
-#' temp.data <- piql.data.select.MCMR(PIQLdata, course = 1)
+#' temp.data <- piql.data.select(PIQLdata, MCMR.grading = "Selected", course = 1)
 #' data.num.MCMR <- temp.data$data.num
 #' # ITA with bootstrapping
 #' ita.data.fc.booted <- ita.fullCon.booted(data.num.MCMR, type = 3, nRuns = 3)

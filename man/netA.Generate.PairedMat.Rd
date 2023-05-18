@@ -18,7 +18,7 @@ Generates paired matrix from community membership data.
 \examples{
 # Pull in PIQL data from AWS and get some course data.
 PIQLdata <- pullPIQLdata()
-temp.piql.data <- PIQLdata$courses
+temp.data <- piql.data.select(PIQLdata, MCMR.grading = "Selected", course = 1)
 data.num <- temp.data$data.num
 
 # Get community membership data
