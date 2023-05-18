@@ -38,9 +38,6 @@
 #' # Check number of student removed. Should be less than 10%.
 #' temp.data$nS.details
 #'
-pulled.PIQL.data <- PIQLdata
-MCMR.grading = "Dichotomous"
-
 piql.data.select <- function(pulled.PIQL.data, MCMR.grading = "Dichotomous", courses = 1, numBlanks.allowed = 0) {
   PIQL.data <- pulled.PIQL.data$courses
   answerKey <- pulled.PIQL.data$answerkey
