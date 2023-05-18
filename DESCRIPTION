@@ -12,6 +12,7 @@ Imports:
   aws.s3,
   BiocManager,
   dplyr,
+  EFAtools,
   hasseDiagram,
   igraph,
   mirt,

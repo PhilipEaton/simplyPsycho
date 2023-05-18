@@ -19,14 +19,8 @@
 #' temp.piql.data <- PIQLdata$courses
 #' data.num <- temp.data$data.num
 #'
-#' # Straight item discrimination
-#' cttDisc.mult(data.num)
-#'
-#' # Booted using 100 random samples (default)
-#' cttDisc.mult(data.num, booted = TRUE)
-#'
-#' # Booted using 1000 random samples by manually setting nRuns
-#' cttDisc.mult(data.num, booted = TRUE, nRuns = 1000)
+#' Begin walkthrough
+#' efa.walkthrough(data.num)
 efa.walkthrough <- function (data){
   if (typeof(data) == "list") {
     data <- data[[2]]
