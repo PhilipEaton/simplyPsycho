@@ -9,20 +9,54 @@
 #'
 #' 2) The output of piql.data.select with one or multiple courses selected.
 #'
+#' @param model (Default = "Normal") Model = "Normal", the mean, standard deviation,
+#' and standard error will be estimated for the given course(s). Model = "Bimodal"
+#' will also report the possible locations of the maximums (means) assuming a
+#' bimodal distribution.
+#'
 #' @param makePlot (Default = FALSE). If TRUE, then a single plot of the
 #' fraction of students with each possible total score and the estimated normal
 #' distribution for each courses in the data will be created.
 #'
-#' @return Mean, Standard deviation, optional plot.
+#' @return Mean, Standard deviation, and optional plot. Additionally, if model = "Bimodal"
+#' then the estimated locaitons of maximums (means) assuming a bimodal distribution will be
+#' reported.
 #'
 #' @export
 #'
 #' @examples
 #' # Pull in PIQL data from AWS and get some course data.
 #' PIQLdata <- pullPIQLdata()
+#' # --------------------------- #
+#' # Get PIQL data for one course
+#' temp.data <- piql.data.select(PIQLdata, course = 2, numBlanks.allowed = 0)
+#' data.alpha <- temp.data$data.alpha
+#' data.num <- temp.data$data.num
+#' # --------------------------- #
+#' # For multiple courses
 #' data.multiple <- piql.data.select(PIQLdata, course = c(1,2,123))
 #'
-#' gen.TotalScores.Normal(data, makePlot = TRUE)
+#' ## Single Course
+#' # Total score means and standard deviations...
+#' gen.model.TotalScores(data.num)
+#' # ...  with optional plotting.
+#' gen.model.TotalScores(data.num, makePlot = TRUE)
+#' # Supports bimodal estimations as well
+#' gen.model.TotalScores(data.num, model = "Bimodal", makePlot = TRUE)
+#'
+#' ## Multiple courses
+#' # Total score means and standard deviations...
+#' gen.model.TotalScores(data.multiple)
+#' # ...  with optional plotting.
+#' gen.model.TotalScores(data.multiple, makePlot = TRUE)
+#' # Supports bimodal estimations as well
+#' gen.model.TotalScores(data.multiple, model = "Bimodal", makePlot = TRUE)
+
+
+
+
+
+
 gen.model.TotalScores <- function(data, model = "normal", makePlot = FALSE){
   data.list <- list()
 
