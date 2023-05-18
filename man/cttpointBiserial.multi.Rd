@@ -36,6 +36,13 @@ PIQLdata <- pullPIQLdata()
 temp.piql.data <- PIQLdata$courses
 data.num <- temp.data$data.num
 
-# Point-biserial
+# Straight item difficulty.
 cttpointBiserial.multi(data.num)
+
+# Booted using 100 random samples (default)
+cttpointBiserial.multi(data.num, booted = TRUE)
+
+# Booted using 1000 random samples by manually setting nRuns
+cttpointBiserial.multi(data.num, booted = TRUE, nRuns = 1000)
+
 }
