@@ -17,6 +17,8 @@
 #' If "FourScale", then MCMR items will be graded o the 4 scale:
 #' (0 = completely incorrect, 1 = correct and incorrect, 2 = some correct, 3 = completely correct)
 #'
+#' @param MCMR.items Which items are MCMR. Defaulted to PIQL (15 through 20).
+#'
 #' @param numBlanks.allowed (default = 0) Number of blanks allowed in the resulting data.
 #'
 #' @param Matched (Default = FALSE). If TRUE, only matching student IDs will be extracted
@@ -41,7 +43,7 @@
 #' # Check number of student removed. Should be less than 10%.
 #' temp.data$nS.details
 #'
-piql.data.select <- function(pulled.PIQL.data, MCMR.grading = "Dichotomous", courses = 1, numBlanks.allowed = 0, Matched = FALSE) {
+piql.data.select <- function(pulled.PIQL.data, MCMR.grading = "Dichotomous", MCMR.items = c(15:20), courses = 1, numBlanks.allowed = 0, Matched = FALSE) {
   PIQL.data <- pulled.PIQL.data$courses
   answerKey <- pulled.PIQL.data$answerkey
   courseList <- pulled.PIQL.data$courseList
@@ -106,19 +108,10 @@ piql.data.select <- function(pulled.PIQL.data, MCMR.grading = "Dichotomous", cou
 
     #########################################
     # MCMR Data
-    mcmr.data.alph <- data.alpha[,15:20]
-    mcmr.answers <- unlist((answers[15:20]))
-    nMCMR <- 6
+    mcmr.data.alph <- data.alpha[,MCMR.items]
+    mcmr.answers <- unlist((answers[MCMR.items]))
+    nMCMR <- length(MCMR.items)
     if (MCMR.grading == "Selected") {
-      ##########################################
-      # Extract question information and store correct response selection for
-      ## MCMR items.
-      #
-      ## I tried to make this as general as I could. I know there are more efficient
-      ## ways of doing this, but they would be less general. I want this code to be
-      ## adaptable for application to the GERKIN and what not.
-
-      # First build column names
       mcmr.names <- c()
       for (qq in 1:nMCMR) {
         cur.ans <- unlist(strsplit(mcmr.answers[qq], split = ""))
@@ -145,21 +138,20 @@ piql.data.select <- function(pulled.PIQL.data, MCMR.grading = "Dichotomous", cou
         for (ss in 1:final.nS) {
           chars.stud <- nchar(mcmr.data.alph[ss,qq])
           chars.stud.in.ans <- sum(!is.na(match(unlist(strsplit(mcmr.answers[qq], split = "")),unlist(strsplit(mcmr.data.alph[ss,qq], split = "")))))
-          #if (sum(is.na(chars.stud.in.ans))>0) {chars.stud.in.ans <- 0}
           if (chars.stud.in.ans == 0) {data.num.MCMR[ss,qq] = 0
           } else if (chars.ans == chars.stud) {data.num.MCMR[ss,qq] = 3
           } else if (chars.stud == chars.stud.in.ans) {data.num.MCMR[ss,qq] = 2
           } else {data.num.MCMR[ss,qq] = 1}
         }
       }
-      colnames(data.num.MCMR) <- paste0("Q",c(15:20))
+      colnames(data.num.MCMR) <- paste0("Q",MCMR.items)
     } else {
        data.num.MCMR <- array(NA, dim = c(nrow(data.alpha), nMCMR))
        for (ss in 1:final.nS) {
          data.num.MCMR[ss,] <- as.numeric(mcmr.data.alph[ss,] == mcmr.answers)
        }
-      colnames(data.num.MCMR) <- paste0("Q",c(15:20))
-    }
+      colnames(data.num.MCMR) <- paste0("Q",MCMR.items)
+      }
     # Combine SR and MCMR data
     data.num <- cbind(data.num.SR,data.num.MCMR)
     # Give names to questions
@@ -180,6 +172,7 @@ piql.data.select <- function(pulled.PIQL.data, MCMR.grading = "Dichotomous", cou
                      noquote(paste0("nS.details.", courseList[course])))
   }
   names(thing.return) <- thing.names
+  thing.return$MCMRitems <- MCMR.items
   return(thing.return)
 }
 
