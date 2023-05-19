@@ -3,18 +3,31 @@
 #' @description Use a t-test to compare total scores between two courses, and
 #' ANOVA to compate three or more courses.
 #'
+#' NOTE: Use the Left and Right arrow in the Plots window to switch between the plots.
+#'
 #' @param data MUST BE the output of piql.data.select for multiple courses selected.
 #'
 #' @param makeBoxPlots (Default = FALSE) If TRUE, then bar plots will be made for
 #' all given courses in a single plot.
 #'
-#' @param makeBoxPlots (Default = FALSE) If TRUE, then point plots will be made for
+#' NOTE: Use the Left and Right arrow in the Plots window to switch between the plots.
+#'
+#' @param makeDiffPlots (Default = FALSE) If TRUE, then point plots will be made for
 #' comparing all possible course pairs.
 #'
 #' NOTE: Use the Left and Right arrow in the Plots window to switch between the plots.
 #'
-#' @return Gives the Cohen's d, an interpretation of the Cohen's d, the p-value,
-#' the adjust p-value for multiple comparisions, and an optional barplot.
+#' @param makeSankeyPlots (Default = FALSE) If TRUE, then Sankey plots will be made for
+#' comparing all possible course pairs.
+#'
+#' NOTE: Use the Left and Right arrow in the Viewer window to switch between the plots.
+#'
+#' @param nBins Number of total score bins to use for the Sankey plots. Bins are
+#' "equal" ranges of total score. ~(number of total scores possible)/nBins
+#'
+#' @return Prints Skaney plots for all possible pairing of the given data.
+#'
+#' NOTE: Use the Left and Right arrow in the Plots window to switch between the plots.
 #'
 #' @export
 #'
@@ -23,10 +36,8 @@
 #' PIQLdata <- pullPIQLdata()
 #' data <- piql.data.select(PIQLdata, course = c(1,3), Matched = TRUE)
 #'
-#' # Compare total scores...
-#' gen.compare.courses(data, method = "bonferroni")
-#' # ... supports makinf boxplots as well
-#' gen.compare.courses(data, method = "bonferroni", makeBoxPlots = TRUE)
+#' gen.compare.courses(data, makeSankeyPlots = TRUE)
+#'
 gen.compare.courses <- function (data, makeBoxPlots = FALSE, makeDiffPlots = FALSE, makeSankeyPlots = FALSE, nBins = 7, nRuns = 100, ...){
   data.list <- list()
   # Build list of graded data from given courses
@@ -97,7 +108,6 @@ gen.compare.courses <- function (data, makeBoxPlots = FALSE, makeDiffPlots = FAL
             abline(h = 0, col = "black")
         }
         if (makeSankeyPlots == TRUE) {
-          print("Make Sankey")
           general.compare.courses.MakeSankey(set1, set2, nQ, nBins,temp.names, ii, jj)
         }
         # advance nn value

@@ -4,29 +4,53 @@
 \alias{gen.compare.courses}
 \title{Compare courses}
 \usage{
-gen.compare.courses(data, makeBoxPlots = FALSE, ...)
+gen.compare.courses(
+  data,
+  makeBoxPlots = FALSE,
+  makeDiffPlots = FALSE,
+  makeSankeyPlots = FALSE,
+  nBins = 7,
+  nRuns = 100,
+  ...
+)
 }
 \arguments{
 \item{data}{MUST BE the output of piql.data.select for multiple courses selected.}
 
 \item{makeBoxPlots}{(Default = FALSE) If TRUE, then bar plots will be made for
-all given courses in a single plot.}
+all given courses in a single plot.
+
+NOTE: Use the Left and Right arrow in the Plots window to switch between the plots.}
+
+\item{makeDiffPlots}{(Default = FALSE) If TRUE, then point plots will be made for
+comparing all possible course pairs.
+
+NOTE: Use the Left and Right arrow in the Plots window to switch between the plots.}
+
+\item{makeSankeyPlots}{(Default = FALSE) If TRUE, then Sankey plots will be made for
+comparing all possible course pairs.
+
+NOTE: Use the Left and Right arrow in the Viewer window to switch between the plots.}
+
+\item{nBins}{Number of total score bins to use for the Sankey plots. Bins are
+"equal" ranges of total score. ~(number of total scores possible)/nBins}
 }
 \value{
-Gives the Cohen's d, an interpretation of the Cohen's d, the p-value,
-the adjust p-value for multiple comparisions, and an optional barplot.
+Prints Skaney plots for all possible pairing of the given data.
+
+NOTE: Use the Left and Right arrow in the Plots window to switch between the plots.
 }
 \description{
 Use a t-test to compare total scores between two courses, and
 ANOVA to compate three or more courses.
+
+NOTE: Use the Left and Right arrow in the Plots window to switch between the plots.
 }
 \examples{
 # Pull in PIQL data from AWS and get some course data.
 PIQLdata <- pullPIQLdata()
 data <- piql.data.select(PIQLdata, course = c(1,3), Matched = TRUE)
 
-# Compare total scores...
-gen.compare.courses(data, method = "bonferroni")
-# ... supports makinf boxplots as well
-gen.compare.courses(data, method = "bonferroni", makeBoxPlots = TRUE)
+gen.compare.courses(data, makeSankeyPlots = TRUE)
+
 }
