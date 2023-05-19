@@ -7,6 +7,7 @@
 piql.data.select(
   pulled.PIQL.data,
   MCMR.grading = "Dichotomous",
+  MCMR.items = c(15:20),
   courses = 1,
   numBlanks.allowed = 0,
   Matched = FALSE
@@ -22,6 +23,8 @@ the MCMR items will be performed.
 
 If "FourScale", then MCMR items will be graded o the 4 scale:
 (0 = completely incorrect, 1 = correct and incorrect, 2 = some correct, 3 = completely correct)}
+
+\item{MCMR.items}{Which items are MCMR. Defaulted to PIQL (15 through 20).}
 
 \item{numBlanks.allowed}{(default = 0) Number of blanks allowed in the resulting data.}
 
