@@ -42,7 +42,7 @@ irc.get <- function(data.Alpha, data.Num, nO = NULL) {
         temp.options <- data.Alpha[total.score.vec == (ss-1),qq]
         cur.table <- table(c(unlist(strsplit(temp.options, split = ""))))
         cur.table.names <- match(names(cur.table), LETTERS)
-        cur.table.perc <- cur.table/sum(cur.table)
+        cur.table.perc <- cur.table/sum(total.score.vec == (ss-1))
         for (rr in cur.table.names) {
           irc.data[ss,qq,rr] = cur.table.perc[match(rr,cur.table.names)]
         }
