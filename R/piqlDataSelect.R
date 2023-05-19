@@ -19,6 +19,9 @@
 #'
 #' @param numBlanks.allowed (default = 0) Number of blanks allowed in the resulting data.
 #'
+#' @param Matched (Default = FALSE). If TRUE, only matching student IDs will be extracted
+#' across all courses.
+#'
 #' @return A list of course data for the PIQL stored in AWS.
 #'
 #'      $data.alpha ALPHABETICAL data for the selected course.
@@ -38,7 +41,7 @@
 #' # Check number of student removed. Should be less than 10%.
 #' temp.data$nS.details
 #'
-piql.data.select <- function(pulled.PIQL.data, MCMR.grading = "Dichotomous", courses = 1, numBlanks.allowed = 0) {
+piql.data.select <- function(pulled.PIQL.data, MCMR.grading = "Dichotomous", courses = 1, numBlanks.allowed = 0, Matched = FALSE) {
   PIQL.data <- pulled.PIQL.data$courses
   answerKey <- pulled.PIQL.data$answerkey
   courseList <- pulled.PIQL.data$courseList
@@ -48,6 +51,22 @@ piql.data.select <- function(pulled.PIQL.data, MCMR.grading = "Dichotomous", cou
         warning("Course not in course list. Check course numbers.")
         stop()}
       courses[cc] = match(courses[cc], courseList) }
+  }
+  if (Matched == TRUE) {
+    # Check for multiple courses. Quit if not.
+    if (length(courses)==1) {stop("Need more than one course to match data.")
+    } else {
+      PIQL.data[[courses[1]]] <- PIQL.data[[courses[1]]][PIQL.data[[courses[1]]]$blanks<=numBlanks.allowed,]
+      temp.student.list <- PIQL.data[[courses[1]]]$Student.Code
+      for (ss in 2:length(courses)) {
+        PIQL.data[[courses[ss]]] <- PIQL.data[[courses[ss]]][PIQL.data[[courses[ss]]]$blanks<=numBlanks.allowed,]
+        temp.student.list <- temp.student.list[na.omit(match(PIQL.data[[courses[ss]]]$Student.Code,temp.student.list))]
+      }
+    }
+    if (length(temp.student.list)==0) {stop("No continuous matches across all courses.")}
+    for (ss in 1:length(courses)) {
+      PIQL.data[[courses[ss]]] <- PIQL.data[[courses[ss]]][na.omit(match(temp.student.list,PIQL.data[[courses[ss]]]$Student.Code)),]
+    }
   }
   # Open retun varable so it can be appended in the for loop.
   thing.return <- list()
