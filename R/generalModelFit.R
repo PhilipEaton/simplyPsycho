@@ -76,6 +76,8 @@ gen.model.TotalScores <- function(data, model = "normal", makePlot = FALSE){
   for (nn in 1:length(temp.nums)) {
     data <- data.list[[nn]]
     totalScores <- rowSums(data, na.rm = TRUE)
+    test1 <- stats::shapiro.test(totalScores)$p.value
+    test2 <- nortest::lillie.test(totalScores)$p.value
     meanScore <- mean(totalScores)
     sdScore <- sd(totalScores)
     std_mean <- function(x) sd(x)/sqrt(length(x))
@@ -84,13 +86,15 @@ gen.model.TotalScores <- function(data, model = "normal", makePlot = FALSE){
     plotting.info.normals[nn,] = dnorm(grid, meanScore, sdScore)
     # Store return information
     if (model == "normal") {
-      thing.return.master[[nn]] <- data.frame(mean = meanScore, stDev = sdScore, std.error = std_mean(totalScores))
+      thing.return.master[[nn]] <- data.frame(mean = meanScore, stDev = sdScore, std.error = std_mean(totalScores),
+                                              norm.test.shapiro = test1, norm.test.lillie = test2)
       names(thing.return.master)[nn] <- noquote(paste0("course", temp.names[nn]))
     }
     if (model == "Bimodal") {
       thing <- suppressWarnings(multimode::locmodes(totalScores, mod0=2,display = FALSE))
       thing.return.master[[nn]] <- data.frame(mean = meanScore, stDev = sdScore, std.error = std_mean(totalScores),
-                                              mode1.est = thing$locations[1], mode2.est = thing$locations[3])
+                                              mode1.est = thing$locations[1], mode2.est = thing$locations[3],
+                                              norm.test.shapiro = test1, norm.test.lillie = test2)
       names(thing.return.master)[nn] <- noquote(paste0("course", temp.names[nn]))
     }
 
