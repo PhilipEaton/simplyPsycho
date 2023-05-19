@@ -27,7 +27,7 @@
 #' gen.compare.courses(data, method = "bonferroni")
 #' # ... supports makinf boxplots as well
 #' gen.compare.courses(data, method = "bonferroni", makeBoxPlots = TRUE)
-gen.compare.courses <- function (data, makeBoxPlots = FALSE, makeDiffPlots = FALSE, nRuns = 100, ...){
+gen.compare.courses <- function (data, makeBoxPlots = FALSE, makeDiffPlots = FALSE, makeSankeyPlots = FALSE, nBins = 7, nRuns = 100, ...){
   data.list <- list()
   # Build list of graded data from given courses
   if (typeof(data) == "list") {
@@ -95,6 +95,10 @@ gen.compare.courses <- function (data, makeBoxPlots = FALSE, makeDiffPlots = FAL
             plot(x, ylab = paste0("Change in Difficulty: ", paste0(temp.names[jj], "-",  temp.names[ii])), ylim = c(-xmax,xmax))
             error.bar(1:nQ, x, x.err)
             abline(h = 0, col = "black")
+        }
+        if (makeSankeyPlots == TRUE) {
+          print("Make Sankey")
+          general.compare.courses.MakeSankey(set1, set2, nQ, nBins,temp.names, ii, jj)
         }
         # advance nn value
         nn = nn+1
