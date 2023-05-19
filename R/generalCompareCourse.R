@@ -27,7 +27,7 @@
 #' gen.compare.courses(data, method = "bonferroni")
 #' # ... supports makinf boxplots as well
 #' gen.compare.courses(data, method = "bonferroni", makeBoxPlots = TRUE)
-gen.compare.courses <- function (data, makeBoxPlots = FALSE, makeDiffPlots = FALSE, ...){
+gen.compare.courses <- function (data, makeBoxPlots = FALSE, makeDiffPlots = FALSE, nRuns = 100, ...){
   data.list <- list()
   # Build list of graded data from given courses
   if (typeof(data) == "list") {
@@ -50,7 +50,7 @@ gen.compare.courses <- function (data, makeBoxPlots = FALSE, makeDiffPlots = FAL
   diff.results <- as.data.frame(array(NA, dim = c(2*nCourses, nQ)))
   colnames(diff.results) <- colnames(data.list[[1]])
   rownames(results) <- c("Cohen's d", "Interpretation", "p-value", "Adjusted p-value")
-  item.diff <- cttDifficulty(data, booted = TRUE)
+  item.diff <- cttDifficulty(data, booted = TRUE, nRuns = nRuns)
   nn <- 1
   for (ii in 1:nCourses) {
     for (jj in 1:nCourses) {
@@ -95,7 +95,7 @@ gen.compare.courses <- function (data, makeBoxPlots = FALSE, makeDiffPlots = FAL
             plot(x, ylab = paste0("Change in Difficulty: ", paste0(temp.names[jj], "-",  temp.names[ii])), ylim = c(-xmax,xmax))
             error.bar(1:nQ, x, x.err)
             abline(h = 0, col = "black")
-          }
+        }
         # advance nn value
         nn = nn+1
       }
