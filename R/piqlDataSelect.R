@@ -173,6 +173,7 @@ piql.data.select <- function(pulled.PIQL.data, MCMR.grading = "Dichotomous", MCM
   }
   names(thing.return) <- thing.names
   thing.return$MCMRitems <- MCMR.items
+  thing.return$Matched <- Matched
   return(thing.return)
 }
 
