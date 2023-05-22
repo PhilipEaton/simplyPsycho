@@ -27,7 +27,7 @@ export.as.excel <- function(to.be.exported, filename) {
   # Open workbook
   wb <- xlsx::createWorkbook()
   # Sheet names are the names of the given list
-  sheets <- names(theList)
+  sheets <- names(to.be.exported)
 
   for(i in 1:length(to.be.exported)){
     # Begin each sheet at row 1
