@@ -38,12 +38,6 @@
 #' # Supports bootstrapping
 #' response.Frequency(data, booted = TRUE)
 #'
-
-data <- data.alpha
-booted = TRUE
-nRuns = 10
-
-
 response.Frequency <- function (data, booted = FALSE, nRuns = 10, MCMR.separate = TRUE) {
   data.list <- list()
 
