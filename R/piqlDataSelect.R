@@ -48,7 +48,7 @@ piql.data.select <- function(pulled.PIQL.data, MCMR.grading = "Dichotomous", MCM
   PIQL.data <- pulled.PIQL.data$courses
   answerKey <- pulled.PIQL.data$answerkey
   courseList <- pulled.PIQL.data$courseList
-  if (courses == "all") {courses <- as.numeric(courseList)}
+  #if (courses == "all") {courses <- as.numeric(courseList)}
   for (cc in 1:length(courses)) {
     if (courses[cc] > 100) {
       if (sum(courses[cc] == courseList) == 0 )  {
