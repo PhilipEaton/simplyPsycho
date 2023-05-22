@@ -22,5 +22,6 @@ Imports:
   psych,
   stringr,
   tidyverse,
-  tibble
+  tibble,
+  xlsx
   
