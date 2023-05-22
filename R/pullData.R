@@ -1,12 +1,21 @@
 #' Pull  data from AWS
 #'
-#' @description Pulls data from AWS
+#' @description Walks the user through pulling available data from AWS.
+#'
+#' @param accessID AWS access ID.
+#'
+#' @param accessSecret AWS secret access ID.
+#'
+#' @param data.directory (Default = "piqlgerqndata") Name of the directory in AWS
+#' the user is extracting data from.
+#'
+#' @param name.assessment Name of the assessment who data is to be extracted. Default
+#' option will result in a walk through helping the user select the correct data.
+#'
+#' @param region (Default = "us-west-2") AWS region ID for database.
 #'
 #' @return A list of course data stored in AWS for the requested assessment.
 #'
-#'      $courses course data as a list.
-#'
-#'      $answerkey answer key stored in AWS.
 #' @export
 #'
 #' @examples
@@ -148,6 +157,11 @@ File names in AWS should be formatted as ###_###_NAME \n")
     dataFiles[[df,c]] <- dplyr::mutate(dataFiles[[df,c]], t = term[df])
     dataFiles[[df, c]][] <- lapply(dataFiles[[df, c]], gsub, pattern=',', replacement='') ## Remove any commas in the responses.
     dataFiles[[df, c]][] <- lapply(dataFiles[[df, c]], gsub, pattern=' ', replacement='') ## Remove any spaces in the responses.
+    dataFiles[[df, c]] <- dplyr::mutate(dataFiles[[df, c]], blanks = 0) ## Add columns to be able to determine each student's total score and the number of questions left blank.
+    qCols <- c(substr(colnames(dataFiles[[df,c]]),1,1) == "Q")
+    for(i in 1:nrow(dataFiles[[df,c]])){
+      dataFiles[[df,c]]$blanks[i] <- sum(is.na(dataFiles[[df,c]][i,qCols]))
+    }
   }
 
   ## -------------------------------------------------------
