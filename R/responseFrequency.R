@@ -38,6 +38,12 @@
 #' # Supports bootstrapping
 #' response.Frequency(data, booted = TRUE)
 #'
+
+data <- data.alpha
+booted = TRUE
+nRuns = 10
+
+
 response.Frequency <- function (data, booted = FALSE, nRuns = 10, MCMR.separate = TRUE) {
   data.list <- list()
 
@@ -60,13 +66,12 @@ response.Frequency <- function (data, booted = FALSE, nRuns = 10, MCMR.separate 
     data.alpha <- data.list[[nn]]
     nQ <- ncol(data.alpha)
     nS <- nrow(data.alpha)
+    if (MCMR.separate == TRUE) {
+      option.names <- names(table(unlist(lapply(as.list( data.alpha ), function(x) strsplit(x, split = "")))))
+    } else if (MCMR.separate == FALSE) {option.names <- names(table(unlist(as.list(data.alpha))))}
     if (booted == FALSE) {
-      if (MCMR.separate == TRUE) {
-        option.names <- names(table(unlist(lapply(as.list( data.alpha ), function(x) strsplit(x, split = "")))))
-      } else if (MCMR.separate == FALSE) {option.names <- names(table(unlist(as.list(data.alpha))))}
-
       nO <- length(option.names)
-      thing.return <- array(0, dim = c(nQ,nO))
+      thing.return <- array(NA, dim = c(nQ,nO))
       colnames(thing.return) <- option.names
       rownames(thing.return) <- colnames(data.alpha)
       for (qq in 1:nQ) {
@@ -83,17 +88,13 @@ response.Frequency <- function (data, booted = FALSE, nRuns = 10, MCMR.separate 
     }
 
     if (booted == TRUE) {
-      res.freq.booted <- array(NA, dim = c(nRuns, nQ,nO))
+      nO <- length(option.names)
+      res.freq.booted <- array(NA, dim = c(nRuns, nQ, nO))
+      thing.return <- array(0, dim = c(nQ,nO))
       for (ii in 1:nRuns) {
         # Draw a sample (with replacement) from the full sample
         ## that is the same size as the full sample.
         random.sample <- data.alpha[sample(1:nS,nS,replace = TRUE),]
-        if (MCMR.separate == TRUE) {
-          option.names <- names(table(unlist(lapply(as.list( random.sample ), function(x) strsplit(x, split = "")))))
-        } else if (MCMR.separate == FALSE) {option.names <- names(table(unlist(as.list(random.sample))))}
-
-        nO <- length(option.names)
-        thing.return <- array(0, dim = c(nQ,nO))
         colnames(thing.return) <- option.names
         rownames(thing.return) <- colnames(random.sample)
         for (qq in 1:nQ) {

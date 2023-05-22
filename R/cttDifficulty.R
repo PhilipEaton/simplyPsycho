@@ -113,8 +113,9 @@ cttDifficulty <- function (data, booted = FALSE, nRuns = 100, plotBarChart = FAL
 
   if (plotBarChart == TRUE) {
     if (length(thing.return.master) == 1) {
-      temp <- barplot(thing.return.master[[1]][1,], col = c("darkblue"),
+      temp <- barplot(thing.return.master[[1]][1,], col = c("lightblue"),
                       ylim = c(0,1), ylab = "CTT Difficulty", xlab = "Questions")
+      abline(h = c(0.2,0.8), col = "red")
       if (booted == TRUE) {
         error.bar(temp, thing.return.master[[1]][1,], thing.return.master[[1]][2,])
       }
@@ -132,6 +133,7 @@ cttDifficulty <- function (data, booted = FALSE, nRuns = 100, plotBarChart = FAL
       }
       temp <- barplot(plot.thing, col = c(1:length(thing.return.master)) + 1, beside = TRUE,
                       ylim = c(0,1), ylab = "CTT Difficulty", xlab = "Questions")
+      abline(h = c(0.2,0.8), col = "red")
       if (booted == TRUE) {
         error.bar(temp, as.matrix(plot.thing), as.matrix(plot.thing.eb))
       }

@@ -79,6 +79,7 @@ cttpointBiserial <- function(data, booted = FALSE, nRuns = 100, plotBarChart = F
       if (length(thing.return.master) == 1) {
         temp <- barplot(thing.return.master[[1]][1,], col = c("lightblue"),
                         ylim = c(0,1), ylab = "CTT point-biserial", xlab = "Questions")
+        abline(h = c(0.2), col = "red")
         if (booted == TRUE) {
           error.bar(temp, thing.return.master[[1]][1,], thing.return.master[[1]][2,])
         }
@@ -96,6 +97,7 @@ cttpointBiserial <- function(data, booted = FALSE, nRuns = 100, plotBarChart = F
         }
         temp <- barplot(plot.thing, col = c(1:length(thing.return.master)) + 1, beside = TRUE,
                         ylim = c(0,1), ylab = "CTT point-biserial", xlab = "Questions")
+        abline(h = c(0.2), col = "red")
         if (booted == TRUE) {
           error.bar(temp, as.matrix(plot.thing), as.matrix(plot.thing.eb))
         }
