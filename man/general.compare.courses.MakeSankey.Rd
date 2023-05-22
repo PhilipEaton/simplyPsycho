@@ -25,5 +25,4 @@ Makes Sankey plot for gen.compare.course
 PIQLdata <- pullPIQLdata()
 temp.data <- piql.data.select(PIQLdata, course = 2, numBlanks.allowed = 0)
 data.num <- temp.data$data.num
-
 }

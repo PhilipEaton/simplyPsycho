@@ -38,7 +38,7 @@ courses <- c(121,122,123,141,142,143,224,225,226,321,322,323,325)
 ## ---------- Get the data and score it ------------------
 ## -------------------------------------------------------
 ## set up the answer key
-answers <- aws.s3::s3read_using(FUN = read.csv, bucket = dataDirectory, object = "piqlanswerkey.csv")
+answers <- suppressWarnings(aws.s3::s3read_using(FUN = read.csv, bucket = dataDirectory, object = "piqlanswerkey.csv"))
 if(length(answers) == 1){
   answerkey <- read_csv(answers, na = c("N", "", " ", "n", "NA", "999"))
   answerkey[] <- lapply(answerkey, gsub, pattern=',', replacement='') ## Get rid of commas and spaces in the answerkey

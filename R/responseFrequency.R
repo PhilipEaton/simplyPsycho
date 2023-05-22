@@ -1,7 +1,6 @@
-#' CTT Difficulty of multiple courses with bootstrapping for error estimation and plotting:
+#' Response Frequency
 #'
-#' @description Calculate Classical Test Theory item difficulty for the items on
-#' an assessment using a given sample.
+#' @description Calculates the frequency each response option is selected in the given data
 #'
 #' @param data Can be either
 #'

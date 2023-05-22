@@ -13,10 +13,11 @@
 #'
 #' @param MCMR.grading (Default = "Dichotomous") If undefined, then MCMR items will be graded dichotomously.
 #'
-#' If "Selected", then selected = 1 and not selected = 0 for correct options on
-#' the MCMR items will be performed.
+#' If MCMR.grading = "Selected", then the correct options to the indicated MCMR items
+#' will be included in the output as their own columns (e.g., Q17A and Q17C) populated
+#' with 0's and 1's. 0 = student DID NOT select the option, and 1 = student did select the option.
 #'
-#' If "FourScale", then MCMR items will be graded o the 4 scale:
+#' If MCMR.grading = "FourScale", then MCMR items will be graded o the 4 scale:
 #' (0 = completely incorrect, 1 = correct and incorrect, 2 = some correct, 3 = completely correct)
 #'
 #' @param MCMR.items Which items are MCMR. Defaulted to PIQL (15 through 20).
@@ -44,6 +45,7 @@
 #' data.num <- temp.data$data.num
 #' # Check number of student removed. Should be less than 10%.
 #' temp.data$nS.details
+#'
 piql.data.select <- function(pulled.PIQL.data, MCMR.grading = "Dichotomous", MCMR.items = c(15:20), courses = 1, numBlanks.allowed = 0, Matched = FALSE) {
   PIQL.data <- pulled.PIQL.data$courses
   answerKey <- pulled.PIQL.data$answerkey
