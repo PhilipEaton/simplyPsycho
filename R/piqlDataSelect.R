@@ -9,6 +9,8 @@
 #'
 #' Course: 121, 122, 123, 141, 142, 143, 224, 225, 226, 321, 322, 323, 325
 #'
+#' For all courses in the data set to "all" (include quotations).
+#'
 #' @param MCMR.grading (Default = "Dichotomous") If undefined, then MCMR items will be graded dichotomously.
 #'
 #' If "Selected", then selected = 1 and not selected = 0 for correct options on
@@ -42,11 +44,11 @@
 #' data.num <- temp.data$data.num
 #' # Check number of student removed. Should be less than 10%.
 #' temp.data$nS.details
-#'
 piql.data.select <- function(pulled.PIQL.data, MCMR.grading = "Dichotomous", MCMR.items = c(15:20), courses = 1, numBlanks.allowed = 0, Matched = FALSE) {
   PIQL.data <- pulled.PIQL.data$courses
   answerKey <- pulled.PIQL.data$answerkey
   courseList <- pulled.PIQL.data$courseList
+  if (courses == "all") {courses <- as.numeric(courseList)}
   for (cc in 1:length(courses)) {
     if (courses[cc] > 100) {
       if (sum(courses[cc] == courseList) == 0 )  {
@@ -70,7 +72,7 @@ piql.data.select <- function(pulled.PIQL.data, MCMR.grading = "Dichotomous", MCM
       PIQL.data[[courses[ss]]] <- PIQL.data[[courses[ss]]][na.omit(match(temp.student.list,PIQL.data[[courses[ss]]]$Student.Code)),]
     }
   }
-  # Open retun varable so it can be appended in the for loop.
+  # Open return variable so it can be appended in the for loop.
   thing.return <- list()
   thing.names <- c()
   ##########################################################################

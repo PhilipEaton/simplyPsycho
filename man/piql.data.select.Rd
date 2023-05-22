@@ -33,7 +33,9 @@ across all courses.}
 
 \item{course}{(Default = 1 = 121) Course number (1 = 121, 2 = 122, 3 = 123, etc.) or position in course list:
 
-Course: 121, 122, 123, 141, 142, 143, 224, 225, 226, 321, 322, 323, 325}
+Course: 121, 122, 123, 141, 142, 143, 224, 225, 226, 321, 322, 323, 325
+
+For all courses in the data set to "all" (include quotations).}
 }
 \value{
 A list of course data for the PIQL stored in AWS.
@@ -56,5 +58,4 @@ data.alpha <- temp.data$data.alpha
 data.num <- temp.data$data.num
 # Check number of student removed. Should be less than 10\%.
 temp.data$nS.details
-
 }
