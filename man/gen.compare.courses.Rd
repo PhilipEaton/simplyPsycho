@@ -11,6 +11,8 @@ gen.compare.courses(
   makeSankeyPlots = FALSE,
   nBins = 7,
   nRuns = 100,
+  return.gains = FALSE,
+  makeGainsPlots = FALSE,
   ...
 )
 }
@@ -32,11 +34,22 @@ comparing all possible course pairs.
 
 NOTE: Use the Left and Right arrow in the Viewer window to switch between the plots.}
 
-\item{nBins}{Number of total score bins to use for the Sankey plots. Bins are
+\item{nBins}{Number of total score bins to use for the Sankey plots. Bins are roughly
 "equal" ranges of total score. ~(number of total scores possible)/nBins}
+
+\item{nRuns}{Number of runs to use when calculating error in CTT Difficulty.}
+
+\item{return.gains}{(Default = FALSE) If FALSE, the gains are not returned for each student.
+IF TRUE, then gains are reported for each student.}
+
+\item{makeGainsPlots}{(Default = FALSE) If true, then plots of normalized gain/change versus
+"pre" scores are created.}
 }
 \value{
-Prints Skaney plots for all possible pairing of the given data.
+Cohen's d with interpretation, p-value and adjusted p-value of difference in means,
+course normalized gain, difference in item difficulty with error. On request
+box plots, change in difficulty plots, Sankey plots, and gains versus pre score plots
+cal all be created. Sankey plots and gains versus pre score plots require matched data.
 
 NOTE: Use the Left and Right arrow in the Plots window to switch between the plots.
 }
@@ -51,6 +64,18 @@ NOTE: Use the Left and Right arrow in the Plots window to switch between the plo
 PIQLdata <- pullPIQLdata()
 data <- piql.data.select(PIQLdata, course = c(1,3), Matched = TRUE)
 
+gen.compare.courses(data)
+## Box Plots can be made
+gen.compare.courses(data, makeBoxPlots = TRUE)
+## Change in item difficulty pots can be made
+gen.compare.courses(data, makeDiffPlots = TRUE)
+
+### MATCHED DATA
+## Sankey plots can be made
 gen.compare.courses(data, makeSankeyPlots = TRUE)
+## Plots of normalized gain/change versus pre score for each student
+gen.compare.courses(data, makeGainsPlots = TRUE)
+## You can get the gain values by setting return.gains = TRUE
+gen.compare.courses(data, return.gains = TRUE)
 
 }
