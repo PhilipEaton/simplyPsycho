@@ -1,13 +1,12 @@
-#' Export to Spreadhseet
+#' Export to Spreadsheet
 #'
 #' @description Export the outputs of simplyPsycho function as an Excel Spreadsheet
 #'
 #' @param to.be.exported Output from one of simplyPsycho's analysis functions.
 #'
-#' @param filename Name of file when saved to the working directory.
-#' (The .xlsx is added automatically.)
-#'
 #' @return Saves an .xlsx to the current working directory.
+#'
+#' @import rstudioapi
 #'
 #' @export
 #'
@@ -19,8 +18,9 @@
 #'
 #' export.as.excel(results,"filename.xlsx")
 
-export.as.excel <- function(to.be.exported, filename) {
+export.as.excel <- function(to.be.exported) {
   # Check that file name ends with .xlsx. If not, then add it on.
+  filename <- readline(prompt = cat("What would you like to name this save file as (.xlsx will be added automatically)?"))
   if (substr(filename,nchar(filename)-4,nchar(filename)) != ".xlsx") {
     filename <- paste0(filename,".xlsx")
   }
@@ -46,6 +46,10 @@ export.as.excel <- function(to.be.exported, filename) {
     currRow <- currRow + nrow(to.be.exported[[i]]) + 2
   }
   # Export workbook
+  cur.dir <- getwd()
+  new.dir <- rstudioapi::selectDirectory()
+  setwd(new.dir)
   xlsx::saveWorkbook(wb,file = filename)
+  setwd(cur.dir)
 }
 

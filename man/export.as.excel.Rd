@@ -2,15 +2,12 @@
 % Please edit documentation in R/InternalExportasExcel.R
 \name{export.as.excel}
 \alias{export.as.excel}
-\title{Export to Spreadhseet}
+\title{Export to Spreadsheet}
 \usage{
-export.as.excel(to.be.exported, filename)
+export.as.excel(to.be.exported)
 }
 \arguments{
 \item{to.be.exported}{Output from one of simplyPsycho's analysis functions.}
-
-\item{filename}{Name of file when saved to the working directory.
-(The .xlsx is added automatically.)}
 }
 \value{
 Saves an .xlsx to the current working directory.
