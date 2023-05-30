@@ -54,6 +54,7 @@ pulldata <- function(accessID, accessSecret, data.directory = "piqlgerqndata", n
       names.keys <- c(names.keys, dataFileNames[ii])
     }
   }
+  names.keys <- c(names.keys, "Set Later")
 
   ### ------------------------------------------
   ### Get Assessment name if not specified
@@ -115,13 +116,12 @@ File names in AWS should be formatted as ###_###_NAME \n")
   flag.key <- FALSE
   while (flag.key == FALSE) {
     cat("\n\n\n")
-    name.key <- readline(prompt = cat("Enter the file name of the key you would like to use -- \n\n",
-    paste(names.keys, collapse = " or "), "\n\nOR would like to input your key manually? If so, enter 1.", sep = ""))
+    cat("Select from the following list \n ")
+    name.key <- unlist(utils::select.list(as.list(names.keys)))
+    #name.key <- readline(prompt = cat("Enter the file name of the key you would like to use -- \n\n",
+    #paste(names.keys, collapse = " or "), "\n\nOR would like to input your key manually? If so, enter 1.", sep = ""))
     if (name.key %in% names.keys) {
       flag.key = TRUE
-    } else if (name.key == "1") {
-      flag.key = TRUE
-      name.key = "Set Later"
     } else {cat("Not a viable entry. Try again.")}
   }
   ## -------------------------------------------------------

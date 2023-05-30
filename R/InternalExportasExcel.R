@@ -47,7 +47,7 @@ export.as.excel <- function(to.be.exported) {
   }
   # Export workbook
   cur.dir <- getwd()
-  new.dir <- rstudioapi::selectDirectory()
+  new.dir <- choose_directory()
   setwd(new.dir)
   xlsx::saveWorkbook(wb,file = filename)
   setwd(cur.dir)
