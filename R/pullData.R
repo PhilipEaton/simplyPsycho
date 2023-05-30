@@ -62,9 +62,13 @@ pulldata <- function(accessID, accessSecret, data.directory = "piqlgerqndata", n
     flag.name <- FALSE
     while (flag.name == FALSE) {
       cat("\n\n\n")
-      name.assessment <- readline(prompt = cat("Which assessment would you like data from -- ", paste(names.assessments, collapse = " or "), ": ", sep = ""))
+      cat("Which assessment would you like data from: \n")
+      name.assessment <- unlist(utils::select.list(as.list(c(names.assessments,"My Assessment is not here."))))
       if (name.assessment %in% names.assessments) {
         flag.name = TRUE
+      } else if (name.assessment == "My Assessment is not here.") {
+        cat("Check that data file names are formatted correctly in AWS.\nFile names in AWS should be formatted as ###_###_NAME \n")
+        stop("Assessment does not exist in AWS pool.")
         } else {print("Not a viable assessment name. Try again.")}
       }
   } else if (name.assessment %in% names.assessments == FALSE) {
