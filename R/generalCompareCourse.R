@@ -86,7 +86,7 @@ gen.compare.courses <- function (data, makeBoxPlots = FALSE, makeDiffPlots = FAL
   # Open storage variables
   results <- as.data.frame(array(NA, dim = c(5,nCourses*(nCourses-1)/2)))
   rownames(results) <- c("Cohen's d", "Interpretation", "p-value", "Adjusted p-value", "Course Norm. Gain")
-  diff.results <- as.data.frame(array(NA, dim = c(2*nCourses, nQ)))
+  diff.results <- as.data.frame(array(NA, dim = c((nCourses*(nCourses-1)), nQ)))
   colnames(diff.results) <- colnames(data.list[[1]])
   item.diff <- cttDifficulty(data, booted = TRUE, nRuns = nRuns)
   norm.gain.full <- as.data.frame(array(NA, dim = c(nS,nCourses)))
