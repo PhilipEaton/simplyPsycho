@@ -10,6 +10,11 @@
 #'
 #' 2) The output of piql.data.select with one or multiple courses selected.
 #'
+#' @param perc (Default = 0.27) percentage or percentile to be used in the analysis.
+#'
+#' @param as.Percentile (Default = FALSE) If true, then students are split on percentile
+#' not as percentage in total score.
+#'
 #' @param booted Logical (default = FALSE). FALSE means no bootstrapping will be
 #' performed. TRUE turns on the bootstrapping feature.
 #'
