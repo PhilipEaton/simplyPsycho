@@ -7,6 +7,7 @@
 cttDiscrimination(
   data,
   perc = 0.27,
+  as.Percentile = FALSE,
   booted = FALSE,
   nRuns = 100,
   plotBarChart = FALSE
@@ -21,6 +22,9 @@ where nS is the number of students in the sample and nQ is the number of questio
 2) The output of piql.data.select with one or multiple courses selected.}
 
 \item{perc}{Top and bottom percentage to be compared (default = 0.27).}
+
+\item{as.Percentile}{Calculate item discrimination user percentiles as opposed to
+raw percentages.}
 
 \item{booted}{Logical (default = FALSE). FALSE means no bootstrapping will be
 performed. TRUE turns on the bootstrapping feature.}

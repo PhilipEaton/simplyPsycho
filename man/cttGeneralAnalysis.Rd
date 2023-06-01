@@ -7,6 +7,7 @@
 cttGeneralAnalysis(
   data,
   perc = 0.27,
+  as.Percentile = FALSE,
   booted = FALSE,
   nRuns = 100,
   plotBarChart = FALSE
@@ -19,6 +20,11 @@ cttGeneralAnalysis(
 where nS is the number of students in the sample and nQ is the number of questions,
 
 2) The output of piql.data.select with one or multiple courses selected.}
+
+\item{perc}{(Default = 0.27) percentage or percentile to be used in the analysis.}
+
+\item{as.Percentile}{(Default = FALSE) If true, then students are split on percentile
+not as percentage in total score.}
 
 \item{booted}{Logical (default = FALSE). FALSE means no bootstrapping will be
 performed. TRUE turns on the bootstrapping feature.}
