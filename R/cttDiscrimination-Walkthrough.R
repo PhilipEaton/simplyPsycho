@@ -27,6 +27,7 @@
 cttDiscrimination.Walkthrough <- function (data){
   # Set up Flags
   flag.perc = FALSE
+  flag.percential = FALSE
   flag.booted = FALSE
   flag.nRuns = FALSE
   flag.plotBarChart = FALSE
@@ -41,6 +42,16 @@ cttDiscrimination.Walkthrough <- function (data){
       flag.perc = TRUE
       perc <- as.numeric(prompt.result)
     } else {cat(crayon::cyan("Not a viable entry. Try again."))}
+  }
+  # ------------------------------------- #
+  # Prompt for percentile
+  prompt.result <- NA
+  cat("Would you like to use percentages or percentials?\n")
+  prompt.result <- unlist(utils::select.list(as.list(c("Percentage", "Percential"))))
+  if ( prompt.result == "Percentage") {
+    as.Percential = FALSE
+  } else if ( prompt.result == "Percential" ) {
+    as.Percentile = TRUE
   }
   # ------------------------------------- #
   # Prompt for bootstrapping
@@ -89,6 +100,6 @@ cttDiscrimination.Walkthrough <- function (data){
 
   # ------------------------------------- #
   # Put it all together
-  return(cttDiscrimination(data, perc, booted, nRuns, plotBarChart))
+  return(cttDiscrimination(data, perc, as.Percentile = as.Percentile, booted, nRuns, plotBarChart))
 }
 

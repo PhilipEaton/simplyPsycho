@@ -41,7 +41,7 @@
 #' cttGeneralAnalysis(data.num, plotBarChart = TRUE)
 #' cttGeneralAnalysis(data.num, booted = TRUE, plotBarChart = TRUE)
 #'
-cttGeneralAnalysis <- function (data, perc = 0.27, booted = FALSE, nRuns = 100, plotBarChart = FALSE){
+cttGeneralAnalysis <- function (data, perc = 0.27, as.Percentile = FALSE, booted = FALSE, nRuns = 100, plotBarChart = FALSE){
   data.list <- list()
 
   if (typeof(data) == "list") {
@@ -87,15 +87,15 @@ cttGeneralAnalysis <- function (data, perc = 0.27, booted = FALSE, nRuns = 100, 
     plotting.info.diff[(2*nn-1),] <- thing.return$difficulty[1,]
     rownames(thing.return$difficulty) <- paste0(rownames(thing.return$difficulty),".",temp.names[nn])
     # Get item point-biserial
-    thing.return$discrimination <- cttDiscrimination(data, perc, booted, nRuns)[[1]]
-    plotting.info.disc[(2*nn-1),] <- thing.return$discrimination[1,]
+    thing.return$discrimination <- as.data.frame(cttDiscrimination(data, perc, as.Percentile = TRUE, booted, nRuns)[[1]])
+    plotting.info.disc[(2*nn-1),] <- unlist(thing.return$discrimination[1,1:nQ])
     rownames(thing.return$discrimination) <- paste0(rownames(thing.return$discrimination),".",temp.names[nn])
     # Save plotting information if booted = TRUE
     if (booted == TRUE) {
       plotting.info.ca[nn,2] <- thing.return$cronbahAlpha[2]
       plotting.info.pb[(2*nn),]   <- thing.return$pointBi[2,]
       plotting.info.diff[(2*nn),]   <- thing.return$difficulty[2,]
-      plotting.info.disc[(2*nn),]   <- thing.return$discrimination[2,]
+      plotting.info.disc[(2*nn),]   <- unlist(thing.return$discrimination[2,1:nQ])
     }
     if (nn == 1) {thing.return.master <- thing.return
     } else {

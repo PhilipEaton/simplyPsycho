@@ -44,7 +44,7 @@ if(length(answers) == 1){
   answerkey[] <- lapply(answerkey, gsub, pattern=',', replacement='') ## Get rid of commas and spaces in the answerkey
   answerkey[] <- lapply(answerkey, gsub, pattern=' ', replacement='')
 } else{
-  answerkey <- tibble::as_tibble(matrix(answers, nrow = 1))
+  answerkey <- as.data.frame(matrix(answers, nrow = 1))
 }
 questionNumbers <- c(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20) ## handwritten because I'm lazy and the test is static.
 qCols <- c(3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22)

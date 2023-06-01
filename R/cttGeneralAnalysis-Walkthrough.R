@@ -43,6 +43,16 @@ cttGeneralAnalysis.Walkthrough <- function (data){
     } else {cat(crayon::cyan("Not a viable entry. Try again."))}
   }
   # ------------------------------------- #
+  # Prompt for percentile
+  prompt.result <- NA
+  cat("Would you like to use percentages or percentials?\n")
+  prompt.result <- unlist(utils::select.list(as.list(c("Percentage", "Percential"))))
+  if ( prompt.result == "Percentage") {
+    as.Percential = FALSE
+  } else if ( prompt.result == "Percential" ) {
+    as.Percentile = TRUE
+  }
+  # ------------------------------------- #
   # Prompt for bootstrapping
   while (flag.booted == FALSE) {
     prompt.result <- NA
@@ -89,6 +99,6 @@ cttGeneralAnalysis.Walkthrough <- function (data){
 
   # ------------------------------------- #
   # Put it all together
-  return(cttGeneralAnalysis(data, perc, booted, nRuns, plotBarChart))
+  return(cttGeneralAnalysis(data, perc, as.Percential, booted, nRuns, plotBarChart))
 }
 

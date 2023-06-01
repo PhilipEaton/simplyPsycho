@@ -38,8 +38,8 @@ general.compare.courses.MakeSankey <- function (set1, set2, nQ, nBins = 7,couse.
       weight.mat[kk,hh] <- sum((score.grouping.100==kk) & (score.grouping.200==hh))
     }
   }
-  labels <- c(paste0(paste0(couse.names[ii],"."),paste0("[",top.of.bin[1:num.bins],"-",top.of.bin[2:(num.bins+1)],")")),
-              paste0(paste0(couse.names[jj],"."),paste0("[",top.of.bin[1:num.bins],"-",top.of.bin[2:(num.bins+1)],")")))
+  labels <- c(paste0(paste0(couse.names[ii],"."),paste0("(",top.of.bin[2:(num.bins+1)],", ",top.of.bin[1:num.bins],"]")),
+              paste0(paste0(couse.names[jj],"."),paste0("(",top.of.bin[2:(num.bins+1)],", ",top.of.bin[1:num.bins],"]")))
   # Create a color palett that can be pulled from for a reasonable number of categories.
   cols <- c(colors()[1:num.bins],colors()[1:num.bins])
   sources <- sort(c(rep(c(1:num.bins),num.bins)))-1

@@ -12,6 +12,9 @@
 #'
 #' @param perc Top and bottom percentage to be compared (default = 0.27).
 #'
+#' @param as.Percentile Calculate item discrimination user percentiles as opposed to
+#' raw percentages.
+#'
 #' @param booted Logical (default = FALSE). FALSE means no bootstrapping will be
 #' performed. TRUE turns on the bootstrapping feature.
 #'
@@ -43,7 +46,7 @@
 #'
 #' # Booted using 1000 random samples by manually setting nRuns
 #' cttDiscrimination(data.num, booted = TRUE, nRuns = 1000)
-cttDiscrimination <- function (data, perc = 0.27,  booted = FALSE, nRuns = 100, plotBarChart = FALSE){
+cttDiscrimination <- function (data, perc = 0.27, as.Percentile = FALSE,  booted = FALSE, nRuns = 100, plotBarChart = FALSE){
   data.list <- list()
 
   if (typeof(data) == "list") {
@@ -61,6 +64,8 @@ cttDiscrimination <- function (data, perc = 0.27,  booted = FALSE, nRuns = 100, 
   }
 
   thing.return.master <- list()
+  thing.return.master.plot <- list()
+  thing.return <- list()
   for (nn in 1:length(temp.nums)) {
     data <- data.list[[nn]]
     # Get number of student and questions
@@ -69,20 +74,41 @@ cttDiscrimination <- function (data, perc = 0.27,  booted = FALSE, nRuns = 100, 
     total.scores <- rowSums(data)
     if (booted == FALSE) {
       # ctt Discrimination
-      thing.return <- t(data.frame(cttDisc = round(colMeans(data[order(total.scores, decreasing = TRUE),][c(1:round(nS*perc,0)),]) -
-                                                     colMeans(data[order(total.scores, decreasing = FALSE),][c(1:round(nS*perc,0)),]), 3)))
-      if ( is.null(colnames(data.num)) )  {
-        colnames(thing.return) <- paste0("Q",c(1:nQ))
+      if (as.Percentile == FALSE) {
+        thing.return <- t(data.frame(cttDisc = round(colMeans(data[order(total.scores, decreasing = TRUE),][c(1:round(nS*perc,0)),]) -
+                                                       colMeans(data[order(total.scores, decreasing = FALSE),][c(1:round(nS*perc,0)),]), 3)))
+        colnames(thing.return) <- paste0("Q", 1:nQ)
+        thing.return.master[[nn]] <- thing.return
+        names(thing.return.master)[nn] <- noquote(paste0("cttDisc", temp.names[nn]))
+        thing.return.master.plot[[nn]] <- thing.return
       } else {
-        colnames(thing.return) <- colnames(data.num)
+        top.score <- total.scores[order(total.scores, decreasing = TRUE)][round(nS*perc,0)]
+        bot.score <- total.scores[order(total.scores, decreasing = FALSE)][round(nS*perc,0)]
+        top.students <- data[total.scores >= top.score,]
+        bot.students <- data[total.scores <= bot.score,]
+        ntop <- nrow(top.students)
+        nbot <- nrow(bot.students)
+        disc <- t(as.data.frame(round(colMeans(top.students) - colMeans(bot.students),3)))
+        thing.return <- data.frame(disc, ntop, nbot)
+        row.names(thing.return) <- ""
+        colnames(thing.return) <- c(paste0("Q",c(1:nQ)), "nS.top", "nS.bot")
+
+        thing.return.master[[nn]] <- thing.return
+        names(thing.return.master)[nn] <- noquote(paste0("cttDisc", temp.names[nn]))
+        thing.return.master.plot[[nn]] <- thing.return[1:nQ]
       }
-      thing.return.master[[nn]] <- thing.return
-      names(thing.return.master)[nn] <- noquote(paste0("cttDisc", temp.names[nn]))
     }
 
     if (booted == TRUE) {
       # Build storage array.
-      itemDisc.booted <- array(NA, dim = c(nRuns, nQ))
+      if (as.Percentile == FALSE) {
+        itemDisc.booted <- array(NA, dim = c(nRuns, nQ))
+        colnames(itemDisc.booted) <- paste0("Q",c(1:nQ))
+      } else {
+        itemDisc.booted <- array(NA, dim = c(nRuns, nQ+2))
+        colnames(itemDisc.booted) <- c(paste0("Q",c(1:nQ)),"nS.top", "nS.bot")
+        }
+
       # Do the runs:
       for (ii in 1:nRuns) {
         # Draw a sample (with replacement) from the full sample
@@ -90,8 +116,19 @@ cttDiscrimination <- function (data, perc = 0.27,  booted = FALSE, nRuns = 100, 
         random.sample <- data[sample(1:nS,nS,replace = TRUE),]
         total.scores <- rowSums(random.sample)
         # Calculate and store disc
-        itemDisc.booted[ii,] <-  t(data.frame(round(colMeans(random.sample[order(total.scores, decreasing = TRUE),][c(1:round(nS*perc,0)),]) -
-                                                      colMeans(random.sample[order(total.scores, decreasing = FALSE),][c(1:round(nS*perc,0)),]), 3)))
+        if (as.Percentile == FALSE) {
+          itemDisc.booted[ii,] <-  t(data.frame(round(colMeans(random.sample[order(total.scores, decreasing = TRUE),][c(1:round(nS*perc,0)),]) -
+                                                        colMeans(random.sample[order(total.scores, decreasing = FALSE),][c(1:round(nS*perc,0)),]), 3)))
+        } else {
+          top.score <- total.scores[order(total.scores, decreasing = TRUE)][round(nS*perc,0)]
+          bot.score <- total.scores[order(total.scores, decreasing = FALSE)][round(nS*perc,0)]
+          top.students <- random.sample[total.scores >= top.score,]
+          bot.students <- random.sample[total.scores <= bot.score,]
+          ntop <- nrow(top.students)
+          nbot <- nrow(bot.students)
+          disc <- as.vector(round(colMeans(top.students) - colMeans(bot.students),3))
+          itemDisc.booted[ii,] <-  t(as.data.frame(c(disc,ntop,nbot)))
+        }
       }
 
       # Means for each item across all runs
@@ -99,15 +136,17 @@ cttDiscrimination <- function (data, perc = 0.27,  booted = FALSE, nRuns = 100, 
       # St. Dev. for each item across all runs
       item.disc.sd <- apply(itemDisc.booted,2,sd)
       # Format return
-      thing.return <- round(t(data.frame(cttDisc.Mean = item.disc.mn,
-                                         cttDisc.StDev = item.disc.sd)), 3)
-      if ( is.null(colnames(data.num)) )  {
-        colnames(thing.return) <- paste0("Q",c(1:nQ))
+      thing.return <- round(t(data.frame(Mean = item.disc.mn,
+                                         StDev = item.disc.sd)), 3)
+      if (as.Percentile == FALSE) {
+        thing.return.master[[nn]] <- thing.return
+        names(thing.return.master)[nn] <- noquote(paste0("cttDisc", temp.names[nn]))
+        thing.return.master.plot[[nn]] <- thing.return
       } else {
-        colnames(thing.return) <- colnames(data.num)
+        thing.return.master[[nn]] <- thing.return
+        names(thing.return.master)[nn] <- noquote(paste0("cttDisc", temp.names[nn]))
+        thing.return.master.plot[[nn]] <- thing.return[,1:nQ]
       }
-      thing.return.master[[nn]] <- thing.return
-      names(thing.return.master)[nn] <- noquote(paste0("cttDisc", temp.names[nn]))
     }
   }
 
@@ -116,26 +155,26 @@ cttDiscrimination <- function (data, perc = 0.27,  booted = FALSE, nRuns = 100, 
   }
 
   if (plotBarChart == TRUE) {
-    if (length(thing.return.master) == 1) {
-      temp <- barplot(thing.return.master[[1]][1,], col = c("lightblue"),
+    if (length(thing.return.master.plot) == 1) {
+      temp <- barplot(unlist(thing.return.master.plot[[1]][1,]), col = c("lightblue"),
                       ylim = c(0,1), ylab = "CTT Discrimination", xlab = "Questions")
       abline(h = c(0.3), col = "red")
       if (booted == TRUE) {
-        error.bar(temp, thing.return.master[[1]][1,], thing.return.master[[1]][2,])
+        error.bar(temp, unlist(thing.return.master.plot[[1]][1,]), unlist(thing.return.master.plot[[1]][2,]))
       }
     }
-    if (length(thing.return.master) > 1) {
-      plot.thing <- thing.return.master[[1]][1,]
+    if (length(thing.return.master.plot) > 1) {
+      plot.thing <- unlist(thing.return.master.plot[[1]][1,])
       if (booted == TRUE) {
-        plot.thing.eb <- thing.return.master[[1]][2,]
+        plot.thing.eb <- unlist(thing.return.master.plot[[1]][2,])
       }
-      for (mm in 2:length(thing.return.master)) {
-        plot.thing <- rbind(plot.thing, thing.return.master[[mm]][1,])
+      for (mm in 2:length(thing.return.master.plot)) {
+        plot.thing <- rbind(plot.thing, unlist(thing.return.master.plot[[mm]][1,]))
         if (booted == TRUE) {
-          plot.thing.eb <- rbind(plot.thing.eb, thing.return.master[[mm]][2,])
+          plot.thing.eb <- rbind(plot.thing.eb, unlist(thing.return.master.plot[[mm]][2,]))
         }
       }
-      temp <- barplot(plot.thing, col = c(1:length(thing.return.master)) + 1, beside = TRUE,
+      temp <- barplot(plot.thing, col = c(1:length(thing.return.master.plot)) + 1, beside = TRUE,
                       ylim = c(0,1), ylab = "CTT Discrimination", xlab = "Questions")
       abline(h = c(0.3), col = "red")
       if (booted == TRUE) {
