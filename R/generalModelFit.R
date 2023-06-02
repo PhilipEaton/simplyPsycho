@@ -53,10 +53,6 @@
 #' gen.model.TotalScores(data.multiple, makePlot = TRUE)
 #' # Supports bimodal estimations as well
 #' gen.model.TotalScores(data.multiple, model = "Bimodal", makePlot = TRUE)
-
-gen.model.TotalScores(data.multiple, model = "Normal", makePlot = TRUE)
-gen.model.TotalScores(data.multiple, model = "Johnson", makePlot = TRUE)
-
 gen.model.TotalScores <- function(data, model = "Normal", makePlot = FALSE){
   data.list <- list()
 

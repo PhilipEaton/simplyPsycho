@@ -20,6 +20,7 @@ Imports:
   nortest,
   plotly,
   psych,
+  SuppDists,
   stringr,
   tidyverse,
   tibble,
