@@ -45,11 +45,11 @@ cttGeneralAnalysis.Walkthrough <- function (data){
   # ------------------------------------- #
   # Prompt for percentile
   prompt.result <- NA
-  cat("Would you like to use percentages or percentials?\n")
-  prompt.result <- unlist(utils::select.list(as.list(c("Percentage", "Percential"))))
+  cat("Would you like to use percentages or percentiles?\n")
+  prompt.result <- unlist(utils::select.list(as.list(c("Percentage", "Percentile"))))
   if ( prompt.result == "Percentage") {
-    as.Percential = FALSE
-  } else if ( prompt.result == "Percential" ) {
+    as.Percentile = FALSE
+  } else if ( prompt.result == "Percentile" ) {
     as.Percentile = TRUE
   }
   # ------------------------------------- #
@@ -99,6 +99,6 @@ cttGeneralAnalysis.Walkthrough <- function (data){
 
   # ------------------------------------- #
   # Put it all together
-  return(cttGeneralAnalysis(data, perc, as.Percential, booted, nRuns, plotBarChart))
+  return(cttGeneralAnalysis(data, perc, as.Percentile, booted, nRuns, plotBarChart))
 }
 

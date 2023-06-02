@@ -92,7 +92,7 @@ cttGeneralAnalysis <- function (data, perc = 0.27, as.Percentile = FALSE, booted
     plotting.info.diff[(2*nn-1),] <- thing.return$difficulty[1,]
     rownames(thing.return$difficulty) <- paste0(rownames(thing.return$difficulty),".",temp.names[nn])
     # Get item point-biserial
-    thing.return$discrimination <- as.data.frame(cttDiscrimination(data, perc, as.Percentile = TRUE, booted, nRuns)[[1]])
+    thing.return$discrimination <- as.data.frame(cttDiscrimination(data, perc, as.Percentile, booted, nRuns)[[1]])
     plotting.info.disc[(2*nn-1),] <- unlist(thing.return$discrimination[1,1:nQ])
     rownames(thing.return$discrimination) <- paste0(rownames(thing.return$discrimination),".",temp.names[nn])
     # Save plotting information if booted = TRUE

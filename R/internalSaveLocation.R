@@ -44,10 +44,10 @@ choose_directory <- function(ini_dir = getwd(),
                              method = select_directory_method(),
                              title = 'Select data directory') {
   switch(method,
-         'choose.dir' = choose.dir(default = ini_dir, caption = title),
-         'RStudioAPI' = selectDirectory(path = ini_dir, caption = title),
+         'choose.dir' = utils::choose.dir(default = ini_dir, caption = title),
+         'RStudioAPI' = rstudioapi::selectDirectory(path = ini_dir, caption = title),
          'tcltk' = tk_choose.dir(default = ini_dir, caption = title),
-         'rChoiceDialogs' = rchoose.dir(default = ini_dir, caption = title),
+         'rChoiceDialogs' = rJava::rchoose.dir(default = ini_dir, caption = title),
          'gWidgets2RGtk2' = gfile(type = 'selectdir', text = title, initial.dir = ini_dir),
          readline('Please enter directory path: ')
   )

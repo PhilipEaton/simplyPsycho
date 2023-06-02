@@ -23,5 +23,5 @@ Imports:
   stringr,
   tidyverse,
   tibble,
-  xlsx
+  writexl
   
