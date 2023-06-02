@@ -156,17 +156,20 @@ cttDiscrimination <- function (data, perc = 0.27, as.Percentile = FALSE,  booted
 
   if (plotBarChart == TRUE) {
     if (length(thing.return.master.plot) == 1) {
-      temp <- barplot(unlist(thing.return.master.plot[[1]][1,]), col = c("lightblue"),
-                      ylim = c(0,1), ylab = "CTT Discrimination", xlab = "Questions")
+      temp <- barplot(unlist(thing.return.master.plot[[1]][1,1:nQ]), col = c("lightblue"),
+                      ylim = c(0,1), xaxt='n')
+      axis(1, at = temp, labels = names(thing.return.master[[1]][1,1:nQ]), cex.axis = 0.75, padj = -1)
+      title(xlab = "Questions", line = 2, cex.lab=1.2)
+      title(ylab = "CTT Discrimination", line = 2, cex.lab=1.2)
       abline(h = c(0.3), col = "red")
       if (booted == TRUE) {
         error.bar(temp, unlist(thing.return.master.plot[[1]][1,]), unlist(thing.return.master.plot[[1]][2,]))
       }
     }
     if (length(thing.return.master.plot) > 1) {
-      plot.thing <- unlist(thing.return.master.plot[[1]][1,])
+      plot.thing <- unlist(thing.return.master.plot[[1]][1,1:nQ])
       if (booted == TRUE) {
-        plot.thing.eb <- unlist(thing.return.master.plot[[1]][2,])
+        plot.thing.eb <- unlist(thing.return.master.plot[[1]][2,1:nQ])
       }
       for (mm in 2:length(thing.return.master.plot)) {
         plot.thing <- rbind(plot.thing, unlist(thing.return.master.plot[[mm]][1,]))
@@ -175,8 +178,14 @@ cttDiscrimination <- function (data, perc = 0.27, as.Percentile = FALSE,  booted
         }
       }
       temp <- barplot(plot.thing, col = c(1:length(thing.return.master.plot)) + 1, beside = TRUE,
-                      ylim = c(0,1), ylab = "CTT Discrimination", xlab = "Questions")
+                      ylim = c(0,1), xaxt='n')
+      temp.label.locations <- temp[round(nrow(temp)/2,0),]
+      axis(1, at = temp.label.locations, labels = names(thing.return.master[[1]][1,1:nQ]), cex.axis = 0.75, padj = -1)
+      title(xlab = "Questions", line = 2, cex.lab=1.2)
+      title(ylab = "CTT Discrimination", line = 2, cex.lab=1.2)
       abline(h = c(0.3), col = "red")
+      legend("topright", legend=c(temp.names), col= c(1:length(thing.return.master)) + 1,
+             lty = 1, cex=1, box.lty=0, ncol = length(temp.names))
       if (booted == TRUE) {
         error.bar(temp, as.matrix(plot.thing), as.matrix(plot.thing.eb))
       }

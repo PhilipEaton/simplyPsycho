@@ -70,8 +70,11 @@ cttGeneralAnalysis <- function (data, perc = 0.27, as.Percentile = FALSE, booted
   thing.return.master <- list()
   plotting.info.ca <- array(NA, dim = c(nC,2))
   plotting.info.pb <- array(NA, dim = c(2*nC,nQ))
+  colnames(plotting.info.pb) <- colnames(data.list[[1]])
   plotting.info.diff <- array(NA, dim = c(2*nC,nQ))
+  colnames(plotting.info.diff) <- colnames(data.list[[1]])
   plotting.info.disc <- array(NA, dim = c(2*nC,nQ))
+  colnames(plotting.info.disc) <- colnames(data.list[[1]])
   for (nn in 1:nC) {
     data <- data.list[[nn]]
     # Get number of questions
@@ -121,7 +124,7 @@ cttGeneralAnalysis <- function (data, perc = 0.27, as.Percentile = FALSE, booted
     }
 
     save.par <- par()
-    par(mar = c(4.1, 4.1, 1, 1) )
+    par(mar = c(3.1, 4.1, 1, 1) )
     layout(mat <- matrix(c(1,2,3,4), nrow = 2, ncol = 2, byrow = TRUE),
            heights = c(1,1),
            widths  = c(1,1)
@@ -129,23 +132,41 @@ cttGeneralAnalysis <- function (data, perc = 0.27, as.Percentile = FALSE, booted
     if (nC == 1) {cols <- "lightblue"
     } else {cols <- c(2:(nC+1))}
     # Plot 1
-    temp <- barplot(plotting.info.ca[,1], col = cols,
-                    ylim = c(0,1), ylab = "Cronbach's Alpha", xlab = "Questions")
+    temp <- barplot(plotting.info.ca[,1], col = cols, beside = TRUE,
+                    ylim = c(0,1), xaxt='n')
+    temp.label.locations <- temp
+    axis(1, at = temp.label.locations, labels = temp.names, cex.axis = 1.2, padj = -0.5)
+    title(ylab = "Cronbach's Alpha", line = 2.25, cex.lab=1.2)
     abline(h = 0.70,col = "red")
     if (booted == TRUE) {error.bar(temp, plotting.info.ca[,1], plotting.info.ca[,2])}
     # Plot 2
     temp <- barplot(plotting.info.pb[2*c(1:nC)-1,], col = cols,
-                    ylim = c(0,1), ylab = "Point-biserial", xlab = "Questions", beside = TRUE)
+                    ylim = c(0,1), beside = TRUE, xaxt='n')
+    if (dim(temp)[2] == 1) { temp <- t(temp)  }
+    temp.label.locations <- temp[ceiling(nrow(temp)/2),]
+    axis(1, at = temp.label.locations, labels = colnames(plotting.info.pb), cex.axis = 0.75, padj = -1)
+    title(xlab = "Questions", line = 2, cex.lab=1.2)
+    title(ylab = "Point-biserial", line = 2.25, cex.lab=1.2)
     abline(h = 0.20,col = "red")
     if (booted == TRUE) {error.bar(temp, plotting.info.pb[2*c(1:nC)-1,], plotting.info.pb[2*c(1:nC),])}
     # Plot 3
     temp <- barplot(plotting.info.diff[2*c(1:nC)-1,], col = cols,
-                    ylim = c(0,1), ylab = "Difficulty", xlab = "Questions", beside = TRUE)
+                    ylim = c(0,1), beside = TRUE, xaxt='n')
+    if (dim(temp)[2] == 1) { temp <- t(temp)  }
+    temp.label.locations <- temp[ceiling(nrow(temp)/2),]
+    axis(1, at = temp.label.locations, labels = colnames(plotting.info.diff), cex.axis = 0.75, padj = -1)
+    title(xlab = "Questions", line = 2, cex.lab=1.2)
+    title(ylab = "Difficulty", line = 2.25, cex.lab=1.2)
     abline(h = c(0.20,0.80),col = "red")
     if (booted == TRUE) {error.bar(temp, plotting.info.diff[2*c(1:nC)-1,], plotting.info.diff[2*c(1:nC),])}
     # Plot 4
     temp <- barplot(plotting.info.disc[2*c(1:nC)-1,], col = cols,
-                    ylim = c(0,1), ylab = "Discrimination", xlab = "Questions", beside = TRUE)
+                    ylim = c(0,1), beside = TRUE, xaxt='n')
+    if (dim(temp)[2] == 1) { temp <- t(temp)  }
+    temp.label.locations <- temp[ceiling(nrow(temp)/2),]
+    axis(1, at = temp.label.locations, labels = colnames(plotting.info.disc), cex.axis = 0.75, padj = -1)
+    title(xlab = "Questions", line = 2, cex.lab=1.2)
+    title(ylab = "Discrimination", line = 2.25, cex.lab=1.2)
     abline(h = c(0.30),col = "red")
     if (booted == TRUE) {error.bar(temp, plotting.info.disc[2*c(1:nC)-1,], plotting.info.disc[2*c(1:nC),])}
     # Reset layout for future plots
