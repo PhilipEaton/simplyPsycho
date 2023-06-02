@@ -4,7 +4,7 @@
 \alias{gen.model.TotalScores}
 \title{General fitting of total scores with a normal distribution.}
 \usage{
-gen.model.TotalScores(data, model = "normal", makePlot = FALSE)
+gen.model.TotalScores(data, model = "Normal", makePlot = FALSE)
 }
 \arguments{
 \item{data}{Can be either
@@ -15,9 +15,11 @@ where nS is the number of students in the sample and nQ is the number of questio
 2) The output of piql.data.select with one or multiple courses selected.}
 
 \item{model}{(Default = "Normal") Model = "Normal", the mean, standard deviation,
-and standard error will be estimated for the given course(s). Model = "Bimodal"
-will also report the possible locations of the maximums (means) assuming a
-bimodal distribution.}
+skew, kertosis and standard error will be estimated for the given course(s).
+Model = "Bimodal" will also report the possible locations of the maximums (means)
+assuming a bimodal distribution.
+Model = "Johnson" will use a Johnson fit method to fit the data including the skew and
+kurtosis.}
 
 \item{makePlot}{(Default = FALSE). If TRUE, then a single plot of the
 fraction of students with each possible total score and the estimated normal
