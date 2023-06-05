@@ -130,7 +130,7 @@ cttGeneralAnalysis <- function (data, perc = 0.27, as.Percentile = FALSE, booted
            widths  = c(1,1)
     )
     if (nC == 1) {cols <- "lightblue"
-    } else {cols <- c(2:(nC+1))}
+    } else {cols <- safe_colorblind_palette[c(1:nC)]}
     # Plot 1
     temp <- barplot(plotting.info.ca[,1], col = cols, beside = TRUE,
                     ylim = c(0,1), xaxt='n')

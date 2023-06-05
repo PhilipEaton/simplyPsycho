@@ -134,15 +134,15 @@ cttDifficulty <- function (data, booted = FALSE, nRuns = 100, plotBarChart = FAL
           plot.thing.eb <- rbind(plot.thing.eb, thing.return.master[[mm]][2,])
         }
       }
-      temp <- barplot(plot.thing, col = c(1:length(thing.return.master)) + 1, beside = TRUE,
-                      ylim = c(0,1), xaxt='n')
+      temp <- barplot(plot.thing, beside = TRUE,
+                      ylim = c(0,1), xaxt='n' , col = safe_colorblind_palette[c(1:length(thing.return.master))])
       temp.label.locations <- temp[round(nrow(temp)/2,0),]
       axis(1, at = temp.label.locations, labels = names(thing.return.master[[1]][1,]), cex.axis = 0.75, padj = -1)
       title(xlab = "Questions", line = 2, cex.lab=1.2)
       title(ylab = "CTT Difficulty", line = 2, cex.lab=1.2)
       abline(h = c(0.2,0.8), col = "red")
-      legend("topright", legend=c(temp.names), col= c(1:length(thing.return.master)) + 1,
-              lty = 1, cex=1, box.lty=0, ncol = length(temp.names))
+      legend("topright", legend=c(temp.names), col= safe_colorblind_palette[c(1:length(thing.return.master))],
+              lty = 1, cex=1, box.lty=0, ncol = length(temp.names), lwd = 2)
       if (booted == TRUE) {
         error.bar(temp, as.matrix(plot.thing), as.matrix(plot.thing.eb))
       }

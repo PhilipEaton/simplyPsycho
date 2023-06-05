@@ -149,25 +149,25 @@ gen.model.TotalScores <- function(data, model = "Normal", makePlot = FALSE){
     }
     if (length(temp.nums) > 1) {
       for (nn in 2:length(temp.nums)) {
-        points(x = c(0:nQ), y = plotting.info.counts[nn,], pch = 16, col = nn)
+        points(x = c(0:nQ), y = plotting.info.counts[nn,], pch = 16, col = safe_colorblind_palette[nn-1])
         if (model== "Normal") {
-          lines(x = grid, y = plotting.info.normals[nn,], col = nn)
+          lines(x = grid, y = plotting.info.normals[nn,], col = safe_colorblind_palette[nn-1])
         } else if (model == "Bimodal") {
-          abline(v = thing.return.master[[nn]][c(4,5)], lty = c(2,3), col = nn)
+          abline(v = thing.return.master[[nn]][c(4,5)], lty = c(2,3), col = safe_colorblind_palette[nn-1])
           means <- plotting.info.normal.bimodal[nn,c(1,2)]
           dev <- plotting.info.normal.bimodal[nn,c(3,4)]
           prop <- plotting.info.normal.bimodal[nn,c(5,6)]
           plotting.info.normal.1 <- dnorm(grid, mean = means[1], sd = dev[1])
           plotting.info.normal.2 <- dnorm(grid, mean = means[2], sd = dev[2])
-          lines(x = grid, y = prop[1]*plotting.info.normal.1 + prop[2]*plotting.info.normal.2, col = nn, lty = 1)
-          lines(x = grid, y = prop[1]*plotting.info.normal.1, col = nn, lty = 2)
-          lines(x = grid, y = prop[2]*plotting.info.normal.2, col = nn, lty = 3)
+          lines(x = grid, y = prop[1]*plotting.info.normal.1 + prop[2]*plotting.info.normal.2, col = safe_colorblind_palette[nn-1], lty = 1)
+          lines(x = grid, y = prop[1]*plotting.info.normal.1, col = safe_colorblind_palette[nn-1], lty = 2)
+          lines(x = grid, y = prop[2]*plotting.info.normal.2, col = safe_colorblind_palette[nn-1], lty = 3)
         } else if (model == "Johnson") {
           parms <- params.main[[nn]]
-          lines(x = grid, y = SuppDists::dJohnson(grid, parms), col = nn)
+          lines(x = grid, y = SuppDists::dJohnson(grid, parms), col = safe_colorblind_palette[nn-1])
         }
       }
-      legend("topright", inset = 0.01, legend=c(temp.names), col= c(1:length(temp.names)),
+      legend("topright", inset = 0.01, legend=c(temp.names), col = c(1, safe_colorblind_palette[2:length(temp.names)]),
              lty = 1, cex=1, box.lty=0, ncol = length(temp.names))
     }
   }

@@ -177,15 +177,15 @@ cttDiscrimination <- function (data, perc = 0.27, as.Percentile = FALSE,  booted
           plot.thing.eb <- rbind(plot.thing.eb, unlist(thing.return.master.plot[[mm]][2,]))
         }
       }
-      temp <- barplot(plot.thing, col = c(1:length(thing.return.master.plot)) + 1, beside = TRUE,
+      temp <- barplot(plot.thing, col = safe_colorblind_palette[c(1:length(thing.return.master))], beside = TRUE,
                       ylim = c(0,1), xaxt='n')
       temp.label.locations <- temp[round(nrow(temp)/2,0),]
       axis(1, at = temp.label.locations, labels = names(thing.return.master[[1]][1,1:nQ]), cex.axis = 0.75, padj = -1)
       title(xlab = "Questions", line = 2, cex.lab=1.2)
       title(ylab = "CTT Discrimination", line = 2, cex.lab=1.2)
       abline(h = c(0.3), col = "red")
-      legend("topright", legend=c(temp.names), col= c(1:length(thing.return.master)) + 1,
-             lty = 1, cex=1, box.lty=0, ncol = length(temp.names))
+      legend("topright", legend=c(temp.names), col= safe_colorblind_palette[c(1:length(thing.return.master))],
+             lty = 1, cex=1, box.lty=0, ncol = length(temp.names), lwd = 2)
       if (booted == TRUE) {
         error.bar(temp, as.matrix(plot.thing), as.matrix(plot.thing.eb))
       }
