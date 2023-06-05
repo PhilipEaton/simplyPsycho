@@ -16,8 +16,8 @@ where nS is the number of students in the sample and nQ is the number of questio
 
 \item{model}{(Default = "Normal") Model = "Normal", the mean, standard deviation,
 skew, kertosis and standard error will be estimated for the given course(s).
-Model = "Bimodal" will also report the possible locations of the maximums (means)
-assuming a bimodal distribution.
+Model = "Bimodal" will also report the possible location of the two mean values
+assuming the sample is drawn from a bimodal distribution.
 Model = "Johnson" will use a Johnson fit method to fit the data including the skew and
 kurtosis.}
 
