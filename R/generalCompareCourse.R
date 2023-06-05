@@ -167,17 +167,47 @@ gen.compare.courses <- function (data, makeBoxPlots = FALSE, makeDiffPlots = FAL
             # Gain
             x = set1
             y = norm.gain
+            foobar <- array(c(x[1],y[1],1),dim = c(3,1))
+            for (hh in 2:length(x)) {
+              if (!is.na(y[hh])) {
+                if (sum(foobar[2,foobar[1,] == x[hh]] == y[hh]) > 0){
+                  temp.x <- which(foobar[1,] == x[hh], arr.ind = TRUE)
+                  temp.y <- which(foobar[2,] == y[hh], arr.ind = TRUE)
+                  foobar[3,temp.x[!is.na(match(temp.x,temp.y))]] <- foobar[3,temp.x[!is.na(match(temp.x,temp.y))]] + 1
+                } else {
+                  foobar <- cbind(foobar, c(x[hh],y[hh],1))
+                }
+              }
+            }
             ymax = max(y, na.rm = TRUE) + 0.1
             ymin = min(y, na.rm = TRUE) - 0.1
-            plot(x, y, ylab = paste0("Norm. Gain: ", paste0(temp.names[jj], "-",  temp.names[ii])),
-                 xlab = paste0("Score on ", temp.names[ii]), ylim = c(ymin,ymax))
+            plot(foobar[1,], foobar[2,], ylab = paste0("Norm. Gain: ", paste0(temp.names[jj], "-",  temp.names[ii])),
+                 xlab = paste0("Score on ", temp.names[ii]), ylim = c(-1,1), pch = 1,
+                 cex = round(foobar[3,],0)/4)
+            #temp.thing <- data.frame(x = x, y= y)
+            #vioplot::vioplot(y~x, data = temp.thing,
+            #                 ylab = paste0("Norm. Gain: ", paste0(temp.names[jj], "-",  temp.names[ii])),
+            #                 xlab = paste0("Score on ", temp.names[ii]), ylim = c(ymin,ymax))
             abline(h=0)
             # Change
             y = norm.change
+            foobar <- array(c(x[1],y[1],1),dim = c(3,1))
+            for (hh in 2:length(x)) {
+              if (!is.na(y[hh])) {
+                if (sum(foobar[2,foobar[1,] == x[hh]] == y[hh]) > 0){
+                  temp.x <- which(foobar[1,] == x[hh], arr.ind = TRUE)
+                  temp.y <- which(foobar[2,] == y[hh], arr.ind = TRUE)
+                  foobar[3,temp.x[!is.na(match(temp.x,temp.y))]] <- foobar[3,temp.x[!is.na(match(temp.x,temp.y))]] + 1
+                } else {
+                  foobar <- cbind(foobar, c(x[hh],y[hh],1))
+                }
+              }
+            }
             ymax = max(y, na.rm = TRUE) + 0.1
             ymin = min(y, na.rm = TRUE) - 0.1
-            plot(x, y, ylab = paste0("Norm. Change: ", paste0(temp.names[jj], "-",  temp.names[ii])),
-                 xlab = paste0("Score on ", temp.names[ii]), ylim = c(-1,1))
+            plot(foobar[1,], foobar[2,], ylab = paste0("Norm. Change: ", paste0(temp.names[jj], "-",  temp.names[ii])),
+                 xlab = paste0("Score on ", temp.names[ii]), ylim = c(-1,1), pch = 1,
+                 cex = round(foobar[3,],0)/4)
             abline(h=0)
           }
         }
