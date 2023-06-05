@@ -58,10 +58,10 @@ cttpointBiserial.internal <- function(data, booted = FALSE, nRuns = 100){
     # Format return
     thing.return <- round(t(data.frame(pointBi.Mean = item.pb.mn,
                                        pointBi.StDev = item.pb.sd)), 3)
-    if ( is.null(colnames(data.num)) )  {
+    if ( is.null(colnames(data)) )  {
       colnames(thing.return) <- paste0("Q",c(1:nQ))
     } else {
-      colnames(thing.return) <- colnames(data.num)
+      colnames(thing.return) <- colnames(data)
     }
     return(thing.return)
   }

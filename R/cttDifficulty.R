@@ -41,7 +41,9 @@
 #'
 #' # Booted using 1000 random samples by manually setting nRuns
 #' cttDifficulty(data.num, booted = TRUE, nRuns = 1000)
-#'
+
+data <- data.multiple
+
 cttDifficulty <- function (data, booted = FALSE, nRuns = 100, plotBarChart = FALSE){
   data.list <- list()
 
@@ -69,11 +71,6 @@ cttDifficulty <- function (data, booted = FALSE, nRuns = 100, plotBarChart = FAL
     if (booted == FALSE) {
       # ctt Difficulty is just the mean sccore with graded as 0/1.
       thing.return <- round(t(data.frame(cttDiff = colMeans(data))), 3)
-      if ( is.null(colnames(data.num)) )  {
-        colnames(thing.return) <- paste0("Q",c(1:nQ))
-      } else {
-        colnames(thing.return) <- colnames(data.num)
-      }
       thing.return.master[[nn]] <- thing.return
       names(thing.return.master)[nn] <- noquote(paste0("cttDiff", temp.names[nn]))
     }
@@ -97,10 +94,10 @@ cttDifficulty <- function (data, booted = FALSE, nRuns = 100, plotBarChart = FAL
       # Format return
       thing.return <- round(t(data.frame(cttDiff.Mean = item.diff.mn,
                                          cttDiff.StDev = item.diff.sd)), 3)
-      if ( is.null(colnames(data.num)) )  {
+      if ( is.null(colnames(data)) )  {
         colnames(thing.return) <- paste0("Q",c(1:nQ))
       } else {
-        colnames(thing.return) <- colnames(data.num)
+        colnames(thing.return) <- colnames(data)
       }
       thing.return.master[[nn]] <- thing.return
       names(thing.return.master)[nn] <- noquote(paste0("cttDiff", temp.names[nn]))

@@ -82,7 +82,9 @@ File names in AWS should be formatted as ###_###_NAME \n")
   dataFileNames <- dataFileNames[grep(name.assessment, as.list(dataFileNames))]
   if (name.assessment == "PIQL") {
     check.length <- 22
-  } else if (name.assessment == "GERQN") {check.length <- 23 }
+  } else if (name.assessment == "GERQN") {
+    check.length <- 23
+  } else {check.length <- 16 }
   # Check names
   temp.toRemove <- c()
   for (ii in 1:length(dataFileNames)) {
@@ -108,12 +110,15 @@ File names in AWS should be formatted as ###_###_NAME \n")
   ### Get the term and course numbers in current data
   term <- c()
   courses <- c()
+  course.names <- c()
   for (ii in 1:length(dataFileNames)) {
     term <- c(term,substr(dataFileNames[ii],1,3))
-    courses <- c(courses,substr(dataFileNames[ii],5,7))
+    course.names <- c(course.names, paste(unlist(strsplit(dataFileNames[ii],"\\_|\\."))[2], unlist(strsplit(dataFileNames[ii],"\\_|\\."))[4], sep = "."))
+    courses <- c(courses, unlist(strsplit(dataFileNames[ii],"\\_|\\."))[2])
   }
   term <- term[!duplicated(term)]
   courses <- courses[!duplicated(courses)]
+  course.names <- course.names[!duplicated(course.names)]
 
   ## -------------------------------------------------------
   ## Get answer key
@@ -147,14 +152,14 @@ File names in AWS should be formatted as ###_###_NAME \n")
 
   ## -------------------------------------------------------
   ##  Set up the datafile frame for imported data and data collected by course
-  dataFiles <- as.data.frame(matrix(data.frame(), nrow = length(term), ncol = length(courses)))
-  dataFilesByCourse <- as.data.frame(matrix(data.frame(),nrow=length(courses),ncol=1))
+  dataFiles <- as.data.frame(matrix(data.frame(), nrow = length(term), ncol = length(course.names)))
+  dataFilesByCourse <- as.data.frame(matrix(data.frame(),nrow=length(course.names),ncol=1))
 
   ## pull the data, clean it, and score it
   for (ii in 1:length(dataFileNames)) {
     print(dataFileNames[ii])
     df <- match(unlist(strsplit(dataFileNames[ii],"_"))[1], term)
-    c <- match(unlist(strsplit(dataFileNames[ii],"_"))[2], courses)
+    c <- match(paste(unlist(strsplit(dataFileNames[ii],"\\_|\\."))[2], unlist(strsplit(dataFileNames[ii],"\\_|\\."))[4], sep = "."), course.names)
     # Put data into dataFiles
     dataFiles[[df, c]] <- aws.s3::s3read_using(FUN = read.csv, bucket = dataDirectory, object = dataFileNames[ii], na.strings = c("N","", " ", "n", "NA", "999", "777"))
     colnames(dataFiles[[df, c]])[substr(colnames(dataFiles[[df, c]]),1,1) == "Q"] <- paste0("Q",c(1:sum(substr(colnames(dataFiles[[df, c]]),1,1) == "Q")))
@@ -194,7 +199,7 @@ File names in AWS should be formatted as ###_###_NAME \n")
   thing.return <- list()
   thing.return$courses <- dataFilesByCourse$V1
   thing.return$answerkey <- answerkey
-  thing.return$courseList <- courses
+  thing.return$courseList <- course.names
   thing.return$term <- term
   return(thing.return)
   ###############################################################################

@@ -26,6 +26,7 @@ data.select.Walkthrough <- function(pulled.data) {
   # ----------------------------------- #
   # Prompt for which courses user wants
   selected.courses <- c()
+  courses <- c()
   current.course.list <- courseList
   flag.course.select = FALSE
   while (flag.course.select == FALSE) {
@@ -37,15 +38,13 @@ data.select.Walkthrough <- function(pulled.data) {
     prompt.course.more <- unlist(utils::select.list(as.list(c("Yes","No"))))
     if (prompt.course.more == "No") {flag.course.select = TRUE}
   }
-  courses <- as.numeric(noquote(selected.courses))
   # ----------------------------------- #
   # Load in selected courses
-  for (cc in 1:length(courses)) {
-    if (courses[cc] > 100) {
-      if (sum(courses[cc] == courseList) == 0 )  {
+  for (cc in 1:length(selected.courses)) {
+      if (sum(selected.courses[cc] == courseList) == 0 )  {
         warning("Course not in course list. Check course numbers.")
         stop()}
-      courses[cc] = match(courses[cc], courseList) }
+      courses[cc] = as.numeric(noquote(match(selected.courses[cc], courseList)))
   }
   # ----------------------------------- #
   # Prompt for numBlanks
@@ -61,25 +60,27 @@ data.select.Walkthrough <- function(pulled.data) {
   }
   # ----------------------------------- #
   # Prompt for Matched
-  cat("Would you like this to be a matched set?")
-  prompt.matched <- unlist(utils::select.list(as.list(c("Yes","No"))))
-  if (prompt.matched == "Yes") {Matched = TRUE} else {Matched = FALSE}
-  if (Matched == TRUE) {
-    # Check for multiple courses. Quit if not.
-    if (length(courses)==1) {stop("Need more than one course to match data.")
-    } else {
-      data[[courses[1]]] <- data[[courses[1]]][data[[courses[1]]]$blanks<=numBlanks.allowed,]
-      temp.student.list <- data[[courses[1]]]$Student.Code
-      for (ss in 2:length(courses)) {
-        data[[courses[ss]]] <- data[[courses[ss]]][data[[courses[ss]]]$blanks<=numBlanks.allowed,]
-        temp.student.list <- temp.student.list[na.omit(match(data[[courses[ss]]]$Student.Code,temp.student.list))]
+  if (length(selected.courses) > 1) {
+    cat("Would you like this to be a matched set?")
+    prompt.matched <- unlist(utils::select.list(as.list(c("Yes","No"))))
+    if (prompt.matched == "Yes") {Matched = TRUE} else {Matched = FALSE}
+    if (Matched == TRUE) {
+      # Check for multiple courses. Quit if not.
+      if (length(courses)==1) {stop("Need more than one course to match data.")
+      } else {
+        data[[courses[1]]] <- data[[courses[1]]][data[[courses[1]]]$blanks<=numBlanks.allowed,]
+        temp.student.list <- data[[courses[1]]]$Student.Code
+        for (ss in 2:length(courses)) {
+          data[[courses[ss]]] <- data[[courses[ss]]][data[[courses[ss]]]$blanks<=numBlanks.allowed,]
+          temp.student.list <- temp.student.list[na.omit(match(data[[courses[ss]]]$Student.Code,temp.student.list))]
+        }
+      }
+      if (length(temp.student.list)==0) {stop("No continuous matches across all courses.")}
+      for (ss in 1:length(courses)) {
+        data[[courses[ss]]] <- data[[courses[ss]]][na.omit(match(temp.student.list,data[[courses[ss]]]$Student.Code)),]
       }
     }
-    if (length(temp.student.list)==0) {stop("No continuous matches across all courses.")}
-    for (ss in 1:length(courses)) {
-      data[[courses[ss]]] <- data[[courses[ss]]][na.omit(match(temp.student.list,data[[courses[ss]]]$Student.Code)),]
-    }
-  }
+  } else {Matched = FALSE}
   # ----------------------------------- #
   # Prompt for MCMR.items
   MCMR.items <- c()
