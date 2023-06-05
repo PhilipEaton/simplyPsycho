@@ -50,13 +50,14 @@ piql.data.select <- function(pulled.PIQL.data, MCMR.grading = "Dichotomous", MCM
   PIQL.data <- pulled.PIQL.data$courses
   answerKey <- pulled.PIQL.data$answerkey
   courseList <- pulled.PIQL.data$courseList
-  #if (courses == "all") {courses <- as.numeric(courseList)}
   for (cc in 1:length(courses)) {
-    if (courses[cc] > 100) {
-      if (sum(courses[cc] == courseList) == 0 )  {
-        warning("Course not in course list. Check course numbers.")
-        stop()}
-      courses[cc] = match(courses[cc], courseList) }
+    if (nchar(courses[cc]) > 2) {
+      if (!is.na(match(courses[cc], courseList))) {
+        courses[cc] = match(courses[cc], courseList)
+      } else {
+        stop("Course not in course list. Check course numbers and university affiliation (PEGID = UW).")
+      }
+    }
   }
   if (Matched == TRUE) {
     # Check for multiple courses. Quit if not.
