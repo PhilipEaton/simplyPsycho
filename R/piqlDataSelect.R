@@ -45,18 +45,30 @@
 #' data.num <- temp.data$data.num
 #' # Check number of student removed. Should be less than 10%.
 #' temp.data$nS.details
-#'
 piql.data.select <- function(pulled.PIQL.data, MCMR.grading = "Dichotomous", MCMR.items = c(15:20), courses = 1, numBlanks.allowed = 0, Matched = FALSE) {
   PIQL.data <- pulled.PIQL.data$courses
   answerKey <- pulled.PIQL.data$answerkey
   courseList <- pulled.PIQL.data$courseList
   for (cc in 1:length(courses)) {
     if (nchar(courses[cc]) > 2) {
-      if (!is.na(match(courses[cc], courseList))) {
-        courses[cc] = match(courses[cc], courseList)
-      } else {
+      check.for.match <- grep(courses[cc], courseList)
+      # If no match then stop and throw error.
+      if (identical(check.for.match, integer(0))) {
         stop("Course not in course list. Check course numbers and university affiliation (PEGID = UW).")
       }
+      # If it makes it here then there is at least one match.
+      ## If multiple matches, them prompt for the correct option.
+      if (length(check.for.match) > 1) {
+        cat("Multiple courses contain the identifier you gave. Select the correct course from the options given below:")
+        prompt.correct.course <- unlist(utils::select.list(courseList[check.for.match]))
+        courses[cc] <- as.numeric(grep(prompt.correct.course, courseList))
+      } else {
+        courses[cc] = check.for.match
+      }
+    } else if (courses[cc] < 0 || courses[cc] > length(courses)) {
+      stop(paste0("Course selection number from $courseList needs to be greater than 0 and less than or equal to ", length(courses), ". \n",
+                  "Or needs to be the correct course number. \n",
+                  "Check the number(s) you gave in courses = ... to see if there is an error there."))
     }
   }
   if (Matched == TRUE) {
@@ -89,7 +101,7 @@ piql.data.select <- function(pulled.PIQL.data, MCMR.grading = "Dichotomous", MCM
   #      121, 122, 123, 141, 142, 143, 224, 225, 226, 321, 322, 323, 325
   # ii = 1,   2,   3,   4,   5,   6,   7,   8,   9,   10,  11,  12,  13
   for (cc in 1:length(courses) ) {
-    course <- courses[cc]
+    course <- as.numeric(courses[cc])
     working.data <- PIQL.data[[course]]
     initial.nS <- nrow(working.data)
     # remove blanks
