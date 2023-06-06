@@ -16,8 +16,9 @@
 #' @export
 #'
 #' @examples
-#'
-#'
+#' # Select data via walkthrough using data pulled
+#' # from AWS or personal computer.
+#' data.select.Walkthrough(pulled.data)
 data.select.Walkthrough <- function(pulled.data) {
   data <- pulled.data$courses
   nQ <- sum(substr(colnames(data[[1]]),1,1) == "Q")
