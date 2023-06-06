@@ -65,7 +65,7 @@ piql.data.select <- function(pulled.PIQL.data, MCMR.grading = "Dichotomous", MCM
       } else {
         courses[cc] = check.for.match
       }
-    } else if (courses[cc] < 0 || courses[cc] > length(courses)) {
+    } else if (courses[cc] < 0 || courses[cc] > length(courseList)) {
       stop(paste0("Course selection number from $courseList needs to be greater than 0 and less than or equal to ", length(courses), ". \n",
                   "Or needs to be the correct course number. \n",
                   "Check the number(s) you gave in courses = ... to see if there is an error there."))
