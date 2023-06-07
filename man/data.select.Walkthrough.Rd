@@ -22,3 +22,8 @@ A list of course data:
 Guides the user through selecting the correct data from the
 pulled data from either AWS or from their own computer.
 }
+\examples{
+# Select data via walkthrough using data pulled
+# from AWS or personal computer.
+data.select.Walkthrough(pulled.data)
+}

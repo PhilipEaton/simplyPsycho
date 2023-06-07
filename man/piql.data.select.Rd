@@ -59,5 +59,4 @@ data.alpha <- temp.data$data.alpha
 data.num <- temp.data$data.num
 # Check number of student removed. Should be less than 10\%.
 temp.data$nS.details
-
 }

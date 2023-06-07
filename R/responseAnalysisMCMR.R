@@ -25,9 +25,17 @@
 #' # Pull in PIQL data from AWS and get some course data.
 #' PIQLdata <- pullPIQLdata()
 #' temp.data <- piql.data.select(PIQLdata, course = 2, numBlanks.allowed = 0)
-#' data.num <- temp.data$data.num
 #'
-MCMR.repsonse.analysis <- function (data, booted = FALSE, nRuns = 5, makeCorPlot = FALSE){
+#' # Get selection numbers and correlations
+#' MCMR.response.analysis(temp.data)
+#'
+#' # Can be booted
+#' MCMR.response.analysis(temp.data, boted = TRUE)
+#'
+#' # Can make plots of the correlations matrices
+#' MCMR.response.analysis(temp.data, makeCorPlot = TRUE)
+#'
+MCMR.response.analysis <- function (data, booted = FALSE, nRuns = 5, makeCorPlot = FALSE){
   data.list <- list()
   MCMR.items <- data$MCMRitems
 
