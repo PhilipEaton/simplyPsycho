@@ -41,9 +41,6 @@
 #'
 #' # Booted using 1000 random samples by manually setting nRuns
 #' cttDifficulty(data.num, booted = TRUE, nRuns = 1000)
-
-data <- data.multiple
-
 cttDifficulty <- function (data, booted = FALSE, nRuns = 100, plotBarChart = FALSE){
   data.list <- list()
 
