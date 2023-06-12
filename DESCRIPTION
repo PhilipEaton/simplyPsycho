@@ -16,6 +16,7 @@ Imports:
   EFAtools,
   hasseDiagram,
   igraph,
+  mice,
   mirt,
   multimode,
   nortest,
