@@ -43,6 +43,8 @@ List of complete, imputed data sets for the given data formatted to be
 readily used in all simplyPsycho functions. Suggestion, do not make plots of
 this data using other functions. Get the results and then use the pool.imputations
 function to get the pooled results for the imputed courses.
+
+https://datascienceplus.com/imputing-missing-data-with-r-mice-package/
 }
 \description{
 Uses multiple implutation to create nImps complete data sets.

@@ -31,6 +31,8 @@
 #' this data using other functions. Get the results and then use the pool.imputations
 #' function to get the pooled results for the imputed courses.
 #'
+#' https://datascienceplus.com/imputing-missing-data-with-r-mice-package/
+#'
 #' @export
 #'
 #' @examples
