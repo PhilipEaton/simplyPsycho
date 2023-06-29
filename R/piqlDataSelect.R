@@ -112,14 +112,17 @@ piql.data.select <- function(pulled.PIQL.data, MCMR.grading = "Dichotomous", MCM
     ## handle MCMR items well
     data.alpha <- working.data.noBlanks[,substr(colnames(working.data.noBlanks),1,1) == "Q"]
     answers <- answerKey
+    nQ <- ncol(data.alpha)
 
 
     ##########################################
     # Extract question information and grade single response questions.
-    data.num.SR <- array(NA, dim = c(nrow(data.alpha), 14)) # Hard coded to the PIQLs number of SR questions
-    colnames(data.num.SR) <- paste0("Q",c(1:ncol(data.num.SR)))
+    SR.items <- c(1:nQ)
+    SR.items <- SR.items[-MCMR.items]
+    data.num.SR <- array(NA, dim = c(nrow(data.alpha), length(SR.items)))
+    colnames(data.num.SR) <- paste0("Q",SR.items)
     for (ii in 1:nrow(data.num.SR)) {
-      data.num.SR[ii,] <- as.numeric(data.alpha[ii,1:14] == answers[1:14])
+      data.num.SR[ii,] <- as.numeric(data.alpha[ii,SR.items] == answers[SR.items])
     }
     ##########################################
 
@@ -171,6 +174,7 @@ piql.data.select <- function(pulled.PIQL.data, MCMR.grading = "Dichotomous", MCM
       }
     # Combine SR and MCMR data
     data.num <- cbind(data.num.SR,data.num.MCMR)
+    data.num[is.na(data.num)] = 0
     # Give names to questions
     colnames(data.alpha) <- paste0("Q",c(1:ncol(data.alpha)))
     # Number of student details.

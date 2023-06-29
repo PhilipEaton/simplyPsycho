@@ -29,16 +29,19 @@
 #' # get irc data and plot item 2
 #' irc.data <- irc.get(data.alpha, data.num)
 #' irc.plot(irc.data, 2)
+
+
+
 irc.get <- function(data.Alpha, data.Num, nO = NULL) {
   nQ <- ncol(data.Alpha)
   if (is.null(nO)) {
-    nO <- length(table(unlist(as.list(data.Alpha))))
+    nO <- length(table(unlist(strsplit(unlist(data.Alpha), split = ""))))
   }
-  total.score.vec <- rowSums(data.Num)
+  total.score.vec <- rowSums(data.Num, na.rm = TRUE)
   irc.data <- array(NA, dim = c((nQ+1), nQ, nO))
   for (qq in 1:nQ) {
     for (ss in 1:(nQ+1)) {
-      if (sum(total.score.vec == (ss-1))>0) {
+      if (sum(total.score.vec == (ss-1), na.rm = TRUE) > 0) {
         temp.options <- data.Alpha[total.score.vec == (ss-1),qq]
         cur.table <- table(c(unlist(strsplit(temp.options, split = ""))))
         cur.table.names <- match(names(cur.table), LETTERS)

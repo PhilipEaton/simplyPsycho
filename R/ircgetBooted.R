@@ -51,7 +51,7 @@ irc.get.Booted <- function (data.alpha,data.num, nO = NULL, nRuns = 10) {
   nS <- nrow(data.alpha) # Get number of students in sample
   nQ <- ncol(data.alpha) # Get number of questions in sample
   if (is.null(nO)) {
-    nO <- length(table(unlist(as.list(data.alpha)))) # Get max number of options
+    nO <- length(table(unlist(strsplit(unlist(data.Alpha), split = ""))))
   }
   # set up and run the bootstrap
   irc.booted <- array(NA, dim = c(nRuns, (nQ+1), nQ, nO))

@@ -189,6 +189,7 @@ data.select.Walkthrough <- function(pulled.data) {
     }
     # Combine SR and MCMR data
     data.num <- cbind(data.num.SR,data.num.MCMR)
+    data.num[is.na(data.num)] = 0
     # Give names to questions
     colnames(data.alpha) <- paste0("Q",c(1:ncol(data.alpha)))
     # Number of student details.
