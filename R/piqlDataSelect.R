@@ -118,7 +118,7 @@ piql.data.select <- function(pulled.PIQL.data, MCMR.grading = "Dichotomous", MCM
     ##########################################
     # Extract question information and grade single response questions.
     SR.items <- c(1:nQ)
-    SR.items <- SR.items[-MCMR.items]
+    if ( is.na(MCMR.items) == FALSE ) {SR.items <- SR.items[-MCMR.items]}
     data.num.SR <- array(NA, dim = c(nrow(data.alpha), length(SR.items)))
     colnames(data.num.SR) <- paste0("Q",SR.items)
     for (ii in 1:nrow(data.num.SR)) {
@@ -128,52 +128,59 @@ piql.data.select <- function(pulled.PIQL.data, MCMR.grading = "Dichotomous", MCM
 
     #########################################
     # MCMR Data
-    mcmr.data.alph <- data.alpha[,MCMR.items]
-    mcmr.answers <- unlist((answers[MCMR.items]))
-    nMCMR <- length(MCMR.items)
-    if (MCMR.grading == "Selected") {
-      mcmr.names <- c()
-      for (qq in 1:nMCMR) {
-        cur.ans <- unlist(strsplit(mcmr.answers[qq], split = ""))
-        for (oo in 1:length(cur.ans)) {
-          mcmr.names <- c(mcmr.names, paste0("Q",qq+ncol(data.num.SR),".",cur.ans[oo]))
-        }
-      }
-      data.num.MCMR <- array(NA, dim = c(nrow(data.alpha), length(mcmr.names)))
-      colnames(data.num.MCMR) <- mcmr.names
-      for (ss in 1:nrow(data.alpha)) {
-        num.ans <- 0
+    if ( is.na(MCMR.items) == FALSE ) {
+      mcmr.data.alph <- data.alpha[,MCMR.items]
+      mcmr.answers <- unlist((answers[MCMR.items]))
+      nMCMR <- length(MCMR.items)
+      if (MCMR.grading == "Selected") {
+        mcmr.names <- c()
         for (qq in 1:nMCMR) {
           cur.ans <- unlist(strsplit(mcmr.answers[qq], split = ""))
           for (oo in 1:length(cur.ans)) {
-            data.num.MCMR[ss,(num.ans+oo)] <- as.numeric(grepl(cur.ans[oo], mcmr.data.alph[ss,qq]))
+            mcmr.names <- c(mcmr.names, paste0("Q",qq+ncol(data.num.SR),".",cur.ans[oo]))
           }
-          num.ans <- num.ans + length(cur.ans)
         }
-      }
-    } else if (MCMR.grading == "FourScale") {
-      data.num.MCMR <- array(NA, dim = c(nrow(data.alpha), nMCMR))
-      for (qq in 1:nMCMR) {
-        chars.ans <- nchar(mcmr.answers[qq])
+        data.num.MCMR <- array(NA, dim = c(nrow(data.alpha), length(mcmr.names)))
+        colnames(data.num.MCMR) <- mcmr.names
+        for (ss in 1:nrow(data.alpha)) {
+          num.ans <- 0
+          for (qq in 1:nMCMR) {
+            cur.ans <- unlist(strsplit(mcmr.answers[qq], split = ""))
+            for (oo in 1:length(cur.ans)) {
+              data.num.MCMR[ss,(num.ans+oo)] <- as.numeric(grepl(cur.ans[oo], mcmr.data.alph[ss,qq]))
+            }
+            num.ans <- num.ans + length(cur.ans)
+          }
+        }
+      } else if (MCMR.grading == "FourScale") {
+        data.num.MCMR <- array(NA, dim = c(nrow(data.alpha), nMCMR))
+        for (qq in 1:nMCMR) {
+          chars.ans <- nchar(mcmr.answers[qq])
+          for (ss in 1:final.nS) {
+            chars.stud <- nchar(mcmr.data.alph[ss,qq])
+            chars.stud.in.ans <- sum(!is.na(match(unlist(strsplit(mcmr.answers[qq], split = "")),unlist(strsplit(mcmr.data.alph[ss,qq], split = "")))))
+            if (chars.stud.in.ans == 0) {data.num.MCMR[ss,qq] = 0
+            } else if (chars.ans == chars.stud) {data.num.MCMR[ss,qq] = 3
+            } else if (chars.stud == chars.stud.in.ans) {data.num.MCMR[ss,qq] = 2
+            } else {data.num.MCMR[ss,qq] = 1}
+          }
+        }
+        colnames(data.num.MCMR) <- paste0("Q",MCMR.items)
+      } else {
+        data.num.MCMR <- array(NA, dim = c(nrow(data.alpha), nMCMR))
         for (ss in 1:final.nS) {
-          chars.stud <- nchar(mcmr.data.alph[ss,qq])
-          chars.stud.in.ans <- sum(!is.na(match(unlist(strsplit(mcmr.answers[qq], split = "")),unlist(strsplit(mcmr.data.alph[ss,qq], split = "")))))
-          if (chars.stud.in.ans == 0) {data.num.MCMR[ss,qq] = 0
-          } else if (chars.ans == chars.stud) {data.num.MCMR[ss,qq] = 3
-          } else if (chars.stud == chars.stud.in.ans) {data.num.MCMR[ss,qq] = 2
-          } else {data.num.MCMR[ss,qq] = 1}
+          data.num.MCMR[ss,] <- as.numeric(mcmr.data.alph[ss,] == mcmr.answers)
         }
+        colnames(data.num.MCMR) <- paste0("Q",MCMR.items)
       }
-      colnames(data.num.MCMR) <- paste0("Q",MCMR.items)
-    } else {
-       data.num.MCMR <- array(NA, dim = c(nrow(data.alpha), nMCMR))
-       for (ss in 1:final.nS) {
-         data.num.MCMR[ss,] <- as.numeric(mcmr.data.alph[ss,] == mcmr.answers)
-       }
-      colnames(data.num.MCMR) <- paste0("Q",MCMR.items)
-      }
+    }
+
     # Combine SR and MCMR data
-    data.num <- cbind(data.num.SR,data.num.MCMR)
+    if ( is.na(MCMR.items) == FALSE ) {
+      data.num <- cbind(data.num.SR,data.num.MCMR)
+    } else {
+      data.num <- data.num.SR
+    }
     data.num[is.na(data.num)] = 0
     # Give names to questions
     colnames(data.alpha) <- paste0("Q",c(1:ncol(data.alpha)))

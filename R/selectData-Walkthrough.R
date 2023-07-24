@@ -98,7 +98,9 @@ data.select.Walkthrough <- function(pulled.data) {
       current.SR.items <- current.SR.items[-match( prompt.MCMR,current.SR.items)]
     }
   }
-  current.MCMR.items <- as.numeric(current.MCMR.items)
+  if ( is.null(MCMR.items) == FALSE ) {
+    current.MCMR.items <- as.numeric(current.MCMR.items)
+  }
   current.SR.items <- as.numeric(current.SR.items)
   # ----------------------------------- #
   # Prompt for MCMR.grading
