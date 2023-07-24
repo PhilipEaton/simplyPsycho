@@ -2,7 +2,7 @@
 % Please edit documentation in R/generalCompareCourse-Walkthrough.R
 \name{gen.compare.courses.Walkthrough}
 \alias{gen.compare.courses.Walkthrough}
-\title{General Comparision of Courses WALKTHROUGH:}
+\title{General Comparison of Courses WALKTHROUGH:}
 \usage{
 gen.compare.courses.Walkthrough(data)
 }
@@ -27,9 +27,8 @@ Walks the user through a general comparision of courses in the
  given sample.
 }
 \examples{
-# Pull in PIQL data from AWS and get some course data.
-PIQLdata <- pullPIQLdata()
-temp.data <- piql.data.select(PIQLdata, course = 2, numBlanks.allowed = 0)
+# Pull sample data (*Current example data does not support this.*)
+temp.data <- piql.data.select(simplySampleData, courses = 1, numBlanks.allowed = 0, MCMR.items = NA)
 
 # Begin walkthrough
 gen.compare.courses.Walkthrough(temp.data)

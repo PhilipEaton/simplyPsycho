@@ -50,9 +50,8 @@ https://datascienceplus.com/imputing-missing-data-with-r-mice-package/
 Uses multiple implutation to create nImps complete data sets.
 }
 \examples{
-# Pull in PIQL data from AWS and get some course data.
-PIQLdata <- pullPIQLdata()
-temp.data <- piql.data.select(PIQLdata, course = 2, numBlanks.allowed = 0)
+# Pull sample data
+temp.data <- piql.data.select(simplySampleData, courses = 1, numBlanks.allowed = 2, MCMR.items = NA)
 answerKey <- PIQLdata$answerkey
 
 multiple.imputations(temp.data, answerKey)

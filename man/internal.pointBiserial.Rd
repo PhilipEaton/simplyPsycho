@@ -21,9 +21,8 @@ on the assessment are all measuring a single similar latent trait. If the point-
 is poor, then this could be an indication that the assessment is multidimensional.
 }
 \examples{
-# Pull in PIQL data from AWS and get some course data.
-PIQLdata <- pullPIQLdata()
-temp.piql.data <- PIQLdata$courses
+# Pull sample data
+temp.data <- piql.data.select(simplySampleData, courses = 1, numBlanks.allowed = 0, MCMR.items = NA)
 data.num <- temp.data$data.num
 
 # Point-biserial

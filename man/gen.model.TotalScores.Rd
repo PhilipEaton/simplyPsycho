@@ -34,12 +34,8 @@ reported.
 Fits a normal distribution to the total scores.
 }
 \examples{
-# Pull in PIQL data from AWS and get some course data.
-PIQLdata <- pullPIQLdata()
-# --------------------------- #
-# Get PIQL data for one course
-temp.data <- piql.data.select(PIQLdata, course = 2, numBlanks.allowed = 0)
-data.alpha <- temp.data$data.alpha
+# Pull sample data
+temp.data <- piql.data.select(simplySampleData, courses = 1, numBlanks.allowed = 0, MCMR.items = NA)
 data.num <- temp.data$data.num
 # --------------------------- #
 # For multiple courses
@@ -53,7 +49,7 @@ gen.model.TotalScores(data.num, makePlot = TRUE)
 # Supports bimodal estimations as well
 gen.model.TotalScores(data.num, model = "Bimodal", makePlot = TRUE)
 
-## Multiple courses
+## Multiple courses (*Current sample data does not support this example.*)
 # Total score means and standard deviations...
 gen.model.TotalScores(data.multiple)
 # ...  with optional plotting.

@@ -2,7 +2,7 @@
 % Please edit documentation in R/buildPsychoDatafile.R
 \name{build.psycho.datafile}
 \alias{build.psycho.datafile}
-\title{CTT Difficulty of multiple courses with bootstrapping for error estimation and plotting:}
+\title{Build simplyPsycho data from external data files. INTERNAL}
 \usage{
 build.psycho.datafile(
   datafile,
@@ -14,35 +14,6 @@ build.psycho.datafile(
   blank.ID = NULL
 )
 }
-\arguments{
-\item{data}{Can be either
-
-1) An nS by nQ matrix or data frame of a dichotomous graded (0 or 1) sample,
-where nS is the number of students in the sample and nQ is the number of questions,
-
-2) The output of piql.data.select with one or multiple courses selected.}
-
-\item{booted}{Logical (default = FALSE). FALSE means no bootstrapping will be
-performed. TRUE turns on the bootstrapping feature.}
-
-\item{nRuns}{Number of random samples to use in the bootstrapping (default = 100).
-For publications it is recommended that 10,000 runs be performed since sample
-error goes as 1/sqrt(nRuns).}
-
-\item{plotBarChart}{(Default = FALSE). Generate barchart. If bootstrapping was
-performed, then error bars wll be automatically added (+- 1 standard deviation).}
-}
-\value{
-When booted = FALSE (the default setting) then the straight calculated
-value will be returned. If booted = TRUE, the function will output the mean and
-standard deviation for the CTT item difficulties calculated from nRuns randomly sampled
-with replacement data sets from the given sample.
-}
 \description{
-Calculate Classical Test Theory item difficulty for the items on
-an assessment using a given sample.
-}
-\examples{
-# Pull in PIQL data from AWS and get some course data.
-PIQLdata <- pullPIQLdata()
+Build simplyPsycho data from external data files. INTERNAL
 }

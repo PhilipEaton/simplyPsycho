@@ -18,9 +18,8 @@ Takes in results from simplyPsycho functions applied to multiply imputed
 data sets and returns the mean and sd of the results.
 }
 \examples{
-# Pull in PIQL data from AWS and get some course data.
-PIQLdata <- pullPIQLdata()
-temp.data <- piql.data.select(PIQLdata, course = c(1,2), numBlanks.allowed = 15)
+# Pull sample data
+temp.data <- piql.data.select(simplySampleData, courses = 1, numBlanks.allowed = 2, MCMR.items = NA)
 answerKey <- PIQLdata$answerkey
 
 meh <- multiple.imputations(temp.data, answerKey)

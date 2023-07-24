@@ -17,11 +17,9 @@ Cronbach's Alpha value for the given graded data.
 Calculate Cronbach's Alpha for an assessment from sample data..
 }
 \examples{
-# Pull in PIQL data from AWS and get some course data.
-PIQLdata <- pullPIQLdata()
-temp.piql.data <- PIQLdata$courses
-data.num <- temp.data$data.num
+# Use sample data
+temp.data <- piql.data.select(simplySampleData, courses = 1, numBlanks.allowed = 0, MCMR.items = NA)
 
 # Cronbach's Alpha
-cronbachAlpha(data.num)
+cronbachAlpha(temp.data)
 }

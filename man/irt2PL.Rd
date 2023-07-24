@@ -46,9 +46,8 @@ what the data is doing, and then upping to a larger number of runs once you are
 sure the output is giving you what you want.
 }
 \examples{
-# Pull in PIQL data from AWS and get some course data.
-PIQLdata <- pullPIQLdata()
-temp.piql.data <- PIQLdata$courses
+# Pull sample data
+temp.data <- piql.data.select(simplySampleData, courses = 1, numBlanks.allowed = 0, MCMR.items = NA)
 data.alpha <- temp.data$data.alpha
 data.num <- temp.data$data.num
 
@@ -59,7 +58,7 @@ irt2PL.Method1.res$fit.stDevs
 irt2PL.Method1.res$item.means
 irt2PL.Method1.res$item.stDevs
 
-# Cange Method and number of runs
+# Change Method and number of runs
 irt2PL.Method2.res <- irt2PL(data.num, Method = 2, nRuns = 10)
 irt2PL.Method2.res$fit.means
 irt2PL.Method2.res$fit.stDevs

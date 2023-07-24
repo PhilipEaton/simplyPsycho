@@ -14,15 +14,6 @@ general.compare.courses.MakeSankey(
   jj
 )
 }
-\arguments{
-\item{data}{Can be either}
-}
 \description{
 Makes Sankey plot for gen.compare.course
-}
-\examples{
-# Pull in PIQL data from AWS and get some course data.
-PIQLdata <- pullPIQLdata()
-temp.data <- piql.data.select(PIQLdata, course = 2, numBlanks.allowed = 0)
-data.num <- temp.data$data.num
 }

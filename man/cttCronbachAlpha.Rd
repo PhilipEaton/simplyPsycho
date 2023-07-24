@@ -31,9 +31,8 @@ with replacement data sets from the given sample.
 Calculate Cronbach's Alpha for an assessment from sample data.
 }
 \examples{
-# Pull in PIQL data from AWS and get some course data.
-PIQLdata <- pullPIQLdata()
-temp.data <- piql.data.select(PIQLdata, course = 2, numBlanks.allowed = 0)
+# Pull in sample data
+temp.data <- piql.data.select(simplySampleData, courses = 1, numBlanks.allowed = 0, MCMR.items = NA)
 data.num <- temp.data$data.num
 
 # Straight Cronbach's Alpha

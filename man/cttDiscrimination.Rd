@@ -47,9 +47,8 @@ Calculate Classical Test Theory item discrimination for the items on
 an assessment using a given sample.
 }
 \examples{
-# Pull in PIQL data from AWS and get some course data.
-PIQLdata <- pullPIQLdata()
-temp.data <- piql.data.select(PIQLdata, course = 2, numBlanks.allowed = 0)
+# Pull sample data
+temp.data <- piql.data.select(simplySampleData, courses = 1, numBlanks.allowed = 0, MCMR.items = NA)
 data.num <- temp.data$data.num
 
 # Straight item discrimination

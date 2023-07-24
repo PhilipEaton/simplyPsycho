@@ -23,9 +23,8 @@ Walks the user through the set up and use a general CTT analysis
 of the assessment using a given sample.
 }
 \examples{
-# Pull in PIQL data from AWS and get some course data.
-PIQLdata <- pullPIQLdata()
-temp.data <- piql.data.select(PIQLdata, course = 2, numBlanks.allowed = 0)
+# Pull sample data
+temp.data <- piql.data.select(simplySampleData, courses = 1, numBlanks.allowed = 0, MCMR.items = NA)
 
 # Begin walkthrough
 cttGeneralAnalysis.Walkthrough(temp.data)
