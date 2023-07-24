@@ -14,14 +14,13 @@
 #' @export
 #'
 #' @examples
-#' # Get PIQL data
-#' PIQLdata <- pullPIQLdata()
-#' temp.data <- piql.data.select(PIQLdata, MCMR.grading = "Selected", course = 1)
-#' data.alpha.MCMR <- temp.data$data.alpha
-#' data.num.MCMR <- temp.data$data.num
+#' # Pull sample data
+#' temp.data <- piql.data.select(simplySampleData, courses = 1, numBlanks.allowed = 0, MCMR.items = NA)
+#' data.alpha <- temp.data$data.alpha
+#' data.num <- temp.data$data.num
 #'
 #' # Get contradiction matrix
-#' contradiction.mat.generator(data.num.MCMR)
+#' contradiction.mat.generator(data.num)
 
 contradiction.mat.generator <- function(data) {
   nQ <- ncol(data)

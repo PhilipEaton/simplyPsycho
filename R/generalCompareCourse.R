@@ -43,9 +43,8 @@
 #' @export
 #'
 #' @examples
-#' # Pull in PIQL data from AWS and get some course data.
-#' PIQLdata <- pullPIQLdata()
-#' data <- piql.data.select(PIQLdata, course = c(1,3), Matched = TRUE)
+#' # Pull sample data
+#' temp.data <- piql.data.select(simplySampleData, courses = 1, numBlanks.allowed = 0, MCMR.items = NA)
 #'
 #' gen.compare.courses(data)
 #' ## Box Plots can be made
@@ -53,7 +52,7 @@
 #' ## Change in item difficulty pots can be made
 #' gen.compare.courses(data, makeDiffPlots = TRUE)
 #'
-#' ### MATCHED DATA
+#' ### MATCHED DATA (*Current example data does not support this.*)
 #' ## Sankey plots can be made
 #' gen.compare.courses(data, makeSankeyPlots = TRUE)
 #' ## Plots of normalized gain/change versus pre score for each student

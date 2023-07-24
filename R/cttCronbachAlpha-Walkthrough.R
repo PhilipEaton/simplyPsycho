@@ -16,13 +16,11 @@
 #' @export
 #'
 #' @examples
-#' # Pull in PIQL data from AWS and get some course data.
-#' PIQLdata <- pullPIQLdata()
-#' temp.data <- piql.data.select(PIQLdata, course = 2, numBlanks.allowed = 0)
+#' # Use sample data
+#' temp.data <- piql.data.select(simplySampleData, courses = 1, numBlanks.allowed = 0, MCMR.items = NA)
 #'
 #' # Begin walkthrough
 #' cttCronbachAlpha.Walkthrough(temp.data)
-#'
 cttCronbachAlpha.Walkthrough <- function (data){
   # Set up Flags
   flag.booted = FALSE

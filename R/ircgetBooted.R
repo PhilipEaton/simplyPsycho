@@ -28,9 +28,8 @@
 #' @export
 #'
 #' @examples
-#' # Pull in PIQL data from AWS and get some course data.
-#' PIQLdata <- pullPIQLdata()
-#' temp.piql.data <- PIQLdata$courses
+#' # Pull sample data
+#' temp.data <- piql.data.select(simplySampleData, courses = 1, numBlanks.allowed = 0, MCMR.items = NA)
 #' data.alpha <- temp.data$data.alpha
 #' data.num <- temp.data$data.num
 #'

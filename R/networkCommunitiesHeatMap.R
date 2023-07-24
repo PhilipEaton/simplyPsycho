@@ -1,8 +1,3 @@
-# The following walks the user through how to perform EFA on a sample set of data.
-# Can be readilty adapted to be used on user's own data.
-#
-# Philip Eaton
-#
 #
 netA.Community.HeatMap <- function (data.num, cor.type = 1, lans.alpha = 0.05) {
 

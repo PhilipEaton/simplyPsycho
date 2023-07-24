@@ -1,16 +1,9 @@
 #' Makes Sankey plot
 #'
 #' @description Makes Sankey plot for gen.compare.course
-#'
-#' @param data Can be either
 
 #' @export
 #'
-#' @examples
-#' # Pull in PIQL data from AWS and get some course data.
-#' PIQLdata <- pullPIQLdata()
-#' temp.data <- piql.data.select(PIQLdata, course = 2, numBlanks.allowed = 0)
-#' data.num <- temp.data$data.num
 general.compare.courses.MakeSankey <- function (set1, set2, nQ, nBins = 7,couse.names, ii, jj){
   full.sample <- cbind(set1, set2)
   nS <- nrow(full.sample) # Get number of students in sample

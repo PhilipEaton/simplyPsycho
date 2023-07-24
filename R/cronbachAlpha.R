@@ -10,13 +10,11 @@
 #' @export
 #'
 #' @examples
-#' # Pull in PIQL data from AWS and get some course data.
-#' PIQLdata <- pullPIQLdata()
-#' temp.piql.data <- PIQLdata$courses
-#' data.num <- temp.data$data.num
+#' # Use sample data
+#' temp.data <- piql.data.select(simplySampleData, courses = 1, numBlanks.allowed = 0, MCMR.items = NA)
 #'
 #' # Cronbach's Alpha
-#' cronbachAlpha(data.num)
+#' cronbachAlpha(temp.data)
 cronbachAlpha <- function(data){
   nQ <- ncol(data) # Get number of questions
   item.var <- var(data) # Get variance matrix

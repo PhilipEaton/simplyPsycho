@@ -7,4 +7,3 @@ simplySampleData$courseList <- c(111)
 simplySampleData$term <- c(000)
 simplySampleData
 rm(courses)
-

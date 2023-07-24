@@ -11,9 +11,8 @@
 #' @export
 #'
 #' @examples
-#' # Get PIQL data
-#' PIQLdata <- pullPIQLdata()
-#' temp.data <- piql.data.select(PIQLdata, MCMR.grading = "Selected", course = 1)
+#' # Pull sample data
+#' temp.data <- piql.data.select(simplySampleData, courses = 1, numBlanks.allowed = 0, MCMR.items = NA)
 #' data.alpha.MCMR <- temp.data$data.alpha
 #' data.num.MCMR <- temp.data$data.num
 #' # Check number of student removed. Should be less than 10%.

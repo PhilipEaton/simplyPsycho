@@ -3,6 +3,15 @@
 #' @description Performs an ITA where the user gets to control the max amount of
 #' contractions between a causal pairing to be retained in the model.
 #'
+#' This file does item tree analysis with bootstrapping for error estimation:
+#'  Relaxed the code to so that models will always
+#'  1) includes all of the items on the instrument, and
+#'  2) select the model with the best diff from those models.
+#'
+#' Not really recommend for publications boasting quantitative
+#' robustness. This method is EXTREMELY adhoc and should only be used for
+#' qualitative analysis purposes
+#'
 #' @param data An nS by nQ matrix or data frame of a dichotomous graded (0 or 1) sample,
 #' where nS is the number of students in the sample and nQ is the number of questions.
 #'
@@ -22,9 +31,8 @@
 #' @export
 #'
 #' @examples
-#' # Get PIQL data
-#' PIQLdata <- pullPIQLdata()
-#' temp.data <- piql.data.select(PIQLdata, MCMR.grading = "Selected", course = 1)
+#' # Pull sample data
+#' temp.data <- piql.data.select(simplySampleData, courses = 1, numBlanks.allowed = 0, MCMR.items = NA)
 #' data.num.MCMR <- temp.data$data.num
 #'
 #' # Fully Controlled ITA
@@ -41,22 +49,6 @@
 #'
 #' # and plot
 #' irt.Plot(ita.data.fc$model, labs = labs)
-
-
-# This file does item tree analysis
-#   with bootstrapping for error estimation:
-#
-# Philip Eaton
-#
-#
-
-## I have relaxed the code to so that models will always
-##  1) includes all of the items on the instrument, and
-##  2) select the model with the best diff from those models.
-
-## I am not sure I recommend using this for publications boasting quantitative
-## robustness. This method is EXTREMELY adhoc and should only be used for
-## qualitative analysis purposes
 
 ita.fullCon <- function(data, perc = 0.20, method = 1) {
   # Get average correct % for each question.

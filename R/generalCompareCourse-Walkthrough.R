@@ -1,4 +1,4 @@
-#' General Comparision of Courses WALKTHROUGH:
+#' General Comparison of Courses WALKTHROUGH:
 #'
 #' @description Walks the user through a general comparision of courses in the
 #'  given sample.
@@ -21,9 +21,8 @@
 #' @export
 #'
 #' @examples
-#' # Pull in PIQL data from AWS and get some course data.
-#' PIQLdata <- pullPIQLdata()
-#' temp.data <- piql.data.select(PIQLdata, course = 2, numBlanks.allowed = 0)
+#' # Pull sample data (*Current example data does not support this.*)
+#' temp.data <- piql.data.select(simplySampleData, courses = 1, numBlanks.allowed = 0, MCMR.items = NA)
 #'
 #' # Begin walkthrough
 #' gen.compare.courses.Walkthrough(temp.data)

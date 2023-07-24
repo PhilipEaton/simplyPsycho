@@ -28,9 +28,8 @@
 #' @export
 #'
 #' @examples
-#' # Pull in PIQL data from AWS and get some course data.
-#' PIQLdata <- pullPIQLdata()
-#' data <- piql.data.select(PIQLdata, course = c(1,2), numBlanks.allowed = 0)
+#' # Pull sample data
+#' data <- piql.data.select(simplySampleData, courses = 1, numBlanks.allowed = 0, MCMR.items = NA)
 #'
 #' # Get Response frequencies for each item in each selected course
 #' response.Frequency(data)

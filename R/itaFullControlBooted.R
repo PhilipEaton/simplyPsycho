@@ -3,6 +3,15 @@
 #' @description Performs an ITA where the user gets to control the max amount of
 #' contractions between a causal pairing to be retained in the model.
 #'
+#' This file does item tree analysis with bootstrapping for error estimation:
+#'  Relaxed the code to so that models will always
+#'  1) includes all of the items on the instrument, and
+#'  2) select the model with the best diff from those models.
+#'
+#' Not really recommend for publications boasting quantitative
+#' robustness. This method is EXTREMELY adhoc and should only be used for
+#' qualitative analysis purposes
+#'
 #' @param data An nS by nQ matrix or data frame of a dichotomous graded (0 or 1) sample,
 #' where nS is the number of students in the sample and nQ is the number of questions.
 #'
