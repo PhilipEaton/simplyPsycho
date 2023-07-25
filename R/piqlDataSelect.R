@@ -117,7 +117,7 @@ piql.data.select <- function(pulled.PIQL.data, MCMR.grading = "Dichotomous", MCM
     ##########################################
     # Extract question information and grade single response questions.
     SR.items <- c(1:nQ)
-    if ( is.na(MCMR.items) == FALSE ) {SR.items <- SR.items[-MCMR.items]}
+    if ( sum(is.na(MCMR.items)) == 0 ) {SR.items <- SR.items[-MCMR.items]}
     data.num.SR <- array(NA, dim = c(nrow(data.alpha), length(SR.items)))
     colnames(data.num.SR) <- paste0("Q",SR.items)
     for (ii in 1:nrow(data.num.SR)) {
@@ -127,7 +127,7 @@ piql.data.select <- function(pulled.PIQL.data, MCMR.grading = "Dichotomous", MCM
 
     #########################################
     # MCMR Data
-    if ( is.na(MCMR.items) == FALSE ) {
+    if ( sum(is.na(MCMR.items)) == 0 ) {
       mcmr.data.alph <- data.alpha[,MCMR.items]
       mcmr.answers <- unlist((answers[MCMR.items]))
       nMCMR <- length(MCMR.items)
@@ -175,7 +175,7 @@ piql.data.select <- function(pulled.PIQL.data, MCMR.grading = "Dichotomous", MCM
     }
 
     # Combine SR and MCMR data
-    if ( is.na(MCMR.items) == FALSE ) {
+    if ( sum(is.na(MCMR.items)) == 0 ) {
       data.num <- cbind(data.num.SR,data.num.MCMR)
     } else {
       data.num <- data.num.SR
