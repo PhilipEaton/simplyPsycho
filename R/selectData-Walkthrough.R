@@ -129,6 +129,7 @@ data.select.Walkthrough <- function(pulled.data) {
     ## Currently this is done in a dichotomous fashion and does not
     ## handle MCMR items well
     data.alpha <- working.data.noBlanks[,substr(colnames(working.data.noBlanks),1,1) == "Q"]
+    data.alpha <- noquote(apply(data.alpha, c(1,2), toupper))
     answers <- answerKey
 
 
