@@ -31,7 +31,7 @@
 #'
 #' @examples
 #' # Pull sample data
-#' temp.data <- piql.data.select(simplySampleData, courses = 1, numBlanks.allowed = 0, MCMR.items = NA)
+#' temp.data <- piql.data.select(simplySampleData, courses = 1, numBlanks.allowed = 0, MCMR.grading = "Selected")
 #' data.alpha.MCMR <- temp.data$data.alpha
 #' data.num.MCMR <- temp.data$data.num
 #' # Check number of student removed. Should be less than 10%.

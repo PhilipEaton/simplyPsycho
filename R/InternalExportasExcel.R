@@ -12,7 +12,7 @@
 #'
 #' @examples
 #' # Pull sample data
-#' temp.data <- piql.data.select(simplySampleData, courses = 1, numBlanks.allowed = 0, MCMR.items = NA)
+#' temp.data <- piql.data.select(simplySampleData, courses = 1, numBlanks.allowed = 0)
 #' results <- cttDifficulty(temp.data)
 #'
 #' export.as.excel(results,"filename.xlsx")

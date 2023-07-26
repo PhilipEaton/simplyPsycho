@@ -37,12 +37,12 @@
 #'
 #' @examples
 #' # Pull sample data
-#' temp.data <- piql.data.select(simplySampleData, courses = 1, numBlanks.allowed = 2, MCMR.items = NA)
-#' answerKey <- PIQLdata$answerkey
+#' temp.data <- piql.data.select(simplySampleData, courses = 1, numBlanks.allowed = 0)
+#' answerKey <- simplySampleData$answerkey
 #'
 #' multiple.imputations(temp.data, answerKey)
 
-# Pull in data and the answer key (Thtese will be the dependent variables)
+# Pull in data and the answer key (These will be the dependent variables)
 # Variables = temp.data and answerKey
 multiple.imputations <- function(data, answerKey, remove.lessthan.50perc.answered = TRUE, plot.missing.pattern = FALSE, nImps = 5, nMaxIterations = 5) {
   data.list <- list()

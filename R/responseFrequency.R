@@ -29,28 +29,21 @@
 #'
 #' @examples
 #' # Pull sample data
-#' data <- piql.data.select(simplySampleData, courses = 1, numBlanks.allowed = 0, MCMR.items = NA)
+#' data <- piql.data.select(simplySampleData, courses = 1, numBlanks.allowed = 0)
 #'
 #' # Get Response frequencies for each item in each selected course
 #' response.Frequency(data)
 #' # Supports bootstrapping
 #' response.Frequency(data, booted = TRUE)
-#'
 response.Frequency <- function (data, booted = FALSE, nRuns = 10, MCMR.separate = TRUE) {
   data.list <- list()
 
-  if (typeof(data) == "list" && typeof(data[[1]]) == "list") {
+  if (typeof(data) == "list") {
     temp.nums <- grep("data.alpha", names(data))
     temp.names <- substr(names(data)[temp.nums],12,14)
     for (nn in 1:length(temp.nums)) {
       data.list[[nn]] <- data[[ temp.nums[nn] ]]
     }
-  }
-
-  if (typeof(data) == "list" && typeof(data[[1]]) == "character") {
-    temp.nums <- 1
-    temp.names <- ""
-    data.list[[1]] <- data
   }
 
   thing.return.master <- list()

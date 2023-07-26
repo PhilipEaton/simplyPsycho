@@ -44,21 +44,22 @@
 #'
 #' @examples
 #' # Pull sample data
-#' temp.data <- piql.data.select(simplySampleData, courses = 1, numBlanks.allowed = 0, MCMR.items = NA)
+#' temp.data <- piql.data.select(simplySampleData, courses = c(1,2), numBlanks.allowed = 0, Matched = TRUE)
+#' gen.compare.courses(temp.data,  makeSankeyPlots = TRUE)
 #'
 #' gen.compare.courses(data)
 #' ## Box Plots can be made
-#' gen.compare.courses(data, makeBoxPlots = TRUE)
+#' gen.compare.courses(temp.data, makeBoxPlots = TRUE)
 #' ## Change in item difficulty pots can be made
-#' gen.compare.courses(data, makeDiffPlots = TRUE)
+#' gen.compare.courses(temp.data, makeDiffPlots = TRUE)
 #'
-#' ### MATCHED DATA (*Current example data does not support this.*)
+#' ### MATCHED DATA
 #' ## Sankey plots can be made
-#' gen.compare.courses(data, makeSankeyPlots = TRUE)
+#' gen.compare.courses(temp.data, makeSankeyPlots = TRUE)
 #' ## Plots of normalized gain/change versus pre score for each student
-#' gen.compare.courses(data, makeGainsPlots = TRUE)
+#' gen.compare.courses(temp.data, makeGainsPlots = TRUE)
 #' ## You can get the gain values by setting return.gains = TRUE
-#' gen.compare.courses(data, return.gains = TRUE)
+#' gen.compare.courses(temp.data, return.gains = TRUE)
 #'
 gen.compare.courses <- function (data, makeBoxPlots = FALSE, makeDiffPlots = FALSE, makeSankeyPlots = FALSE, nBins = 7, nRuns = 100, return.gains = FALSE, makeGainsPlots = FALSE, ...){
   data.list <- list()

@@ -11,13 +11,6 @@
 #'
 #' @export
 #'
-#' @examples
-#' # Pull sample data
-#' temp.data <- piql.data.select(simplySampleData, courses = 1, numBlanks.allowed = 0, MCMR.items = NA)
-#' data.num <- temp.data$data.num
-#'
-#' # Get LANS plot of data
-#' netA.lans.plot(temp.data$data.num, cor.type = 1)
 netA.Filter.LANS <- function(initial.network, lans.alpha) {
   # Get the weighted adjacency matrix
   LANS.network.edgematrix <- data.matrix(igraph::get.adjacency(initial.network, attr = "weight"))

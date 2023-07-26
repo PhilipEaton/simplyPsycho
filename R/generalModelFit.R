@@ -28,11 +28,11 @@
 #'
 #' @examples
 #' # Pull sample data
-#' temp.data <- piql.data.select(simplySampleData, courses = 1, numBlanks.allowed = 0, MCMR.items = NA)
+#' temp.data <- piql.data.select(simplySampleData, courses = 1, numBlanks.allowed = 0)
 #' data.num <- temp.data$data.num
 #' # --------------------------- #
 #' # For multiple courses
-#' data.multiple <- piql.data.select(PIQLdata, course = c(1,2,123))
+#' data.multiple <- piql.data.select(simplySampleData, courses = c(1,2), numBlanks.allowed = 0, Matched = TRUE)
 #'
 #' ## Single Course
 #' # Total score means and standard deviations...
@@ -42,7 +42,6 @@
 #' # Supports bimodal estimations as well
 #' gen.model.TotalScores(data.num, model = "Bimodal", makePlot = TRUE)
 #'
-#' ## Multiple courses (*Current sample data does not support this example.*)
 #' # Total score means and standard deviations...
 #' gen.model.TotalScores(data.multiple)
 #' # ...  with optional plotting.
