@@ -111,7 +111,7 @@ piql.data.select <- function(pulled.PIQL.data, MCMR.grading = "Dichotomous", MCM
     ## handle MCMR items well
     data.alpha <- working.data.noBlanks[,substr(colnames(working.data.noBlanks),1,1) == "Q"]
     data.alpha <- noquote(apply(data.alpha, c(1,2), toupper))
-    answers <- answerKey
+    answers <- apply(answerKey, 2, toupper)
     nQ <- ncol(data.alpha)
 
 
