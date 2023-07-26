@@ -19,8 +19,8 @@ data sets and returns the mean and sd of the results.
 }
 \examples{
 # Pull sample data
-temp.data <- piql.data.select(simplySampleData, courses = 1, numBlanks.allowed = 2, MCMR.items = NA)
-answerKey <- PIQLdata$answerkey
+temp.data <- piql.data.select(simplySampleData, courses = 1, numBlanks.allowed = 0)
+answerKey <- simplySampleData$answerkey
 
 meh <- multiple.imputations(temp.data, answerKey)
 

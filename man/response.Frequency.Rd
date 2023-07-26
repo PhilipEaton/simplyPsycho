@@ -36,11 +36,10 @@ Calculates the frequency each response option is selected in the given data
 }
 \examples{
 # Pull sample data
-data <- piql.data.select(simplySampleData, courses = 1, numBlanks.allowed = 0, MCMR.items = NA)
+data <- piql.data.select(simplySampleData, courses = 1, numBlanks.allowed = 0)
 
 # Get Response frequencies for each item in each selected course
 response.Frequency(data)
 # Supports bootstrapping
 response.Frequency(data, booted = TRUE)
-
 }

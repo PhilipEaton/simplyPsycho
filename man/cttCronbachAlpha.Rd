@@ -32,7 +32,7 @@ Calculate Cronbach's Alpha for an assessment from sample data.
 }
 \examples{
 # Pull in sample data
-temp.data <- piql.data.select(simplySampleData, courses = 1, numBlanks.allowed = 0, MCMR.items = NA)
+temp.data <- piql.data.select(simplySampleData, courses = 1, numBlanks.allowed = 0)
 data.num <- temp.data$data.num
 
 # Straight Cronbach's Alpha

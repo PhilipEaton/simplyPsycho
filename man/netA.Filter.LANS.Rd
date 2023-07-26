@@ -18,11 +18,3 @@ A LANS sparcified network.
 \description{
 Takes in an undirected network and performs LANS on it.
 }
-\examples{
-# Pull sample data
-temp.data <- piql.data.select(simplySampleData, courses = 1, numBlanks.allowed = 0, MCMR.items = NA)
-data.num <- temp.data$data.num
-
-# Get LANS plot of data
-netA.lans.plot(temp.data$data.num, cor.type = 1)
-}

@@ -39,7 +39,7 @@ qualitative analysis purposes
 }
 \examples{
 # Pull sample data
-temp.data <- piql.data.select(simplySampleData, courses = 1, numBlanks.allowed = 0, MCMR.items = NA)
+temp.data <- piql.data.select(simplySampleData, courses = 1, numBlanks.allowed = 0, MCMR.grading = "Selected")
 data.num.MCMR <- temp.data$data.num
 
 # Fully Controlled ITA

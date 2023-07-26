@@ -22,7 +22,7 @@ is poor, then this could be an indication that the assessment is multidimensiona
 }
 \examples{
 # Pull sample data
-temp.data <- piql.data.select(simplySampleData, courses = 1, numBlanks.allowed = 0, MCMR.items = NA)
+temp.data <- piql.data.select(simplySampleData, courses = 1, numBlanks.allowed = 0)
 data.num <- temp.data$data.num
 
 # Point-biserial

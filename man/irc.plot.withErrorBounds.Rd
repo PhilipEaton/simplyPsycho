@@ -24,7 +24,7 @@ does not impact the plotting.
 }
 \examples{
 # Pull sample data
-temp.data <- piql.data.select(simplySampleData, courses = 1, numBlanks.allowed = 0, MCMR.items = NA)
+temp.data <- piql.data.select(simplySampleData, courses = 1, numBlanks.allowed = 0)
 data.alpha <- temp.data$data.alpha
 data.num <- temp.data$data.num
 

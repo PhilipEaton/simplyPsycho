@@ -22,7 +22,7 @@ Uses prompts to walks the user through an EFA of the given data.
 }
 \examples{
 # Pull sample data
-temp.data <- piql.data.select(simplySampleData, courses = 1, numBlanks.allowed = 0, MCMR.items = NA)
+temp.data <- piql.data.select(simplySampleData, courses = 1, numBlanks.allowed = 0)
 data.num <- temp.data$data.num.111
 
 Begin walkthrough

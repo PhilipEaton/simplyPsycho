@@ -27,8 +27,8 @@ Walks the user through a general comparision of courses in the
  given sample.
 }
 \examples{
-# Pull sample data (*Current example data does not support this.*)
-temp.data <- piql.data.select(simplySampleData, courses = 1, numBlanks.allowed = 0, MCMR.items = NA)
+# Pull sample data
+temp.data <- piql.data.select(simplySampleData, courses = c(1,2), numBlanks.allowed = 0, Matched = TRUE)
 
 # Begin walkthrough
 gen.compare.courses.Walkthrough(temp.data)

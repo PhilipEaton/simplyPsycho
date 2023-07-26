@@ -43,7 +43,7 @@ SUGGESTION: A less strict version of this function is itaRelaxed and itxVeryRela
 }
 \examples{
 # Pull sample data
-temp.data <- piql.data.select(simplySampleData, courses = 1, numBlanks.allowed = 0, MCMR.items = NA)
+temp.data <- piql.data.select(simplySampleData, courses = 1, numBlanks.allowed = 0, MCMR.grading = "Selected")
 data.num.MCMR <- temp.data$data.num
 # ITA with bootstrapping
 ita.data.3.booted <- ita.strict.booted(data.num.MCMR, type = 3, nRuns = 3)

@@ -48,7 +48,7 @@ Item difficulty, and Item discrimination.
 }
 \examples{
 # Pull sample data
-temp.data <- piql.data.select(simplySampleData, courses = 1, numBlanks.allowed = 0, MCMR.items = NA)
+temp.data <- piql.data.select(simplySampleData, courses = 1, numBlanks.allowed = 0)
 data.num <- temp.data$data.num.111
 
 # Input can be the score matrix

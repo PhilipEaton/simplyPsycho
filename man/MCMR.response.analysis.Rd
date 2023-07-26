@@ -30,16 +30,14 @@ items on the assessment.
 }
 \examples{
 # Pull in PIQL data from AWS and get some course data.
-PIQLdata <- pullPIQLdata()
-temp.data <- piql.data.select(PIQLdata, course = 2, numBlanks.allowed = 0)
+temp.data <- piql.data.select(simplySampleData, courses = 1, numBlanks.allowed = 0)
 
 # Get selection numbers and correlations
 MCMR.response.analysis(temp.data)
 
 # Can be booted
-MCMR.response.analysis(temp.data, boted = TRUE)
+MCMR.response.analysis(temp.data, booted = TRUE)
 
 # Can make plots of the correlations matrices
 MCMR.response.analysis(temp.data, makeCorPlot = TRUE)
-
 }
