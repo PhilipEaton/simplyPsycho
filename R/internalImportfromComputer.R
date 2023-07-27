@@ -44,19 +44,20 @@ import.from.computer <- function() {
           if (temp.type == "Student Response Data") {
             prompt.course <- readline(prompt = cat("What course is this from (try to use the course number, if possible): "))
             prompt.term <- readline(prompt = cat("If from a single term, what term is this from? If not, put NA: "))
+            if (prompt.term == "NA") {prompt.term = NA}
             # ------------------------ #
             # Add course to the return.
             return.master <- build.psycho.datafile(return.master,temp.files, new.course.name = prompt.course,
                                                    new.term = prompt.term, answerKey = answerKey)
             } else if (typeof(answerKey) == "character") { print("Answer key was already installed. No changes were made.\n\n\n")
             } else {
-              if (dim(temp.files)[1] == 2) {
-                answerKey <- temp.files[2,]
-                colnames(answerKey) <- noquote(temp.files[1,])
+              if (dim(temp.files)[1] == 1) {
+                answerKey <- temp.files[1,]
+                colnames(answerKey) <- paste0("Q", c(1:length(answerKey)))
               } else {
                 temp.files <- t(temp.files)
                 answerKey <- temp.files[2,]
-                names(answerKey) <- noquote(temp.files[1,])
+                colnames(answerKey) <- paste0("Q", c(1:length(answerKey)))
                 }
               return.master <- build.psycho.datafile(return.master,NA, new.course.name = NA,
                                                      new.term = NA, answerKey = answerKey)}
