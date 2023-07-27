@@ -52,12 +52,40 @@ data.select.Walkthrough <- function(pulled.data) {
   flag.numBlanks <- FALSE
   while (flag.numBlanks == FALSE) {
     cat("How many blank entries (maximum) will you allow for a single student?\n")
-    prompt.numBlanks <- readline(prompt = cat("Must be an integer larger then or equal to 0 and less than or equal to ", nQ, ".", sep = ""))
+    prompt.numBlanks <- readline(prompt = cat("Must be an integer larger than or equal to 0 and less than or equal to ", nQ, ".", sep = ""))
     if (is.na(suppressWarnings(as.numeric(prompt.numBlanks)))) {cat(crayon::cyan("Not a viable entry. Try again."))
     } else if ( (as.numeric(prompt.numBlanks) >= 0) && (as.numeric(prompt.numBlanks) <= nQ) && (round(as.numeric(prompt.numBlanks),0) == as.numeric(prompt.numBlanks)) ) {
       flag.numBlanks = TRUE
       numBlanks.allowed <- as.numeric(prompt.numBlanks)
     } else {cat(crayon::cyan("Not a viable entry. Try again.\n"))}
+  }
+  # ----------------------------------- #
+  # Prompt for time constraints
+  cat("Do you want to set time constraints?\n")
+  prompt.constrainTime <- unlist(utils::select.list(as.list(c("Yes", "No"))))
+  if (prompt.constrainTime == "No") {minTime.allowed = NA}
+  if (prompt.constrainTime == "Yes") {
+    prompt.constrainTime = TRUE
+    flag.timeMin <- FALSE
+    flag.timeMax <- FALSE
+    while (flag.timeMin == FALSE) {
+      cat("What *minimum* amount of working time would you like to set?\n")
+      prompt.minTime <- readline(prompt = cat("Must be larger than or equal to 0."))
+      if (is.na(suppressWarnings(as.numeric(prompt.minTime)))) {cat(crayon::cyan("Not a viable entry. Try again."))
+      } else if ( (as.numeric(prompt.minTime) >= 0) ) {
+        flag.timeMin = TRUE
+        minTime.allowed <- as.numeric(prompt.minTime)
+      } else {cat(crayon::cyan("Not a viable entry. Try again.\n"))}
+    }
+    while (flag.timeMax == FALSE) {
+      cat("What *maximum* amount of working time would you like to set?\n")
+      prompt.maxTime <- readline(prompt = cat("Must be larger than ", minTime.allowed, ".", sep = ""))
+      if (is.na(suppressWarnings(as.numeric(prompt.maxTime)))) {cat(crayon::cyan("Not a viable entry. Try again."))
+      } else if ( (as.numeric(prompt.maxTime) > minTime.allowed) ) {
+        flag.timeMax = TRUE
+        maxTime.allowed <- as.numeric(prompt.maxTime)
+      } else {cat(crayon::cyan("Not a viable entry. Try again.\n"))}
+    }
   }
   # ----------------------------------- #
   # Prompt for Matched
@@ -70,9 +98,17 @@ data.select.Walkthrough <- function(pulled.data) {
       if (length(courses)==1) {stop("Need more than one course to match data.")
       } else {
         data[[courses[1]]] <- data[[courses[1]]][data[[courses[1]]]$blanks<=numBlanks.allowed,]
+        if ( is.na(minTime.allowed) == FALSE ) {
+          data[[courses[1]]] <- data[[courses[1]]][as.numeric(data[[courses[1]]]$Time) >= minTime.allowed,]
+          data[[courses[1]]] <- data[[courses[1]]][as.numeric(data[[courses[1]]]$Time) <= maxTime.allowed,]
+        }
         temp.student.list <- data[[courses[1]]]$Student.Code
         for (ss in 2:length(courses)) {
           data[[courses[ss]]] <- data[[courses[ss]]][data[[courses[ss]]]$blanks<=numBlanks.allowed,]
+          if ( is.na(minTime.allowed) == FALSE ) {
+            data[[courses[ss]]] <- data[[courses[ss]]][as.numeric(data[[courses[ss]]]$Time) >= minTime.allowed,]
+            data[[courses[ss]]] <- data[[courses[ss]]][as.numeric(data[[courses[ss]]]$Time) <= maxTime.allowed,]
+          }
           temp.student.list <- temp.student.list[na.omit(match(data[[courses[ss]]]$Student.Code,temp.student.list))]
         }
       }
@@ -113,7 +149,7 @@ data.select.Walkthrough <- function(pulled.data) {
 
   # ----------------------------------- #
   # Activate grading!
-  MCMR.items <- current.MCMR.items
+  MCMR.items <- as.numeric(current.MCMR.items)
   MCMR.grading <- prompt.MCMR.grading
   # Open return variable so it can be appended in the for loop.
   thing.return <- list()
@@ -121,8 +157,14 @@ data.select.Walkthrough <- function(pulled.data) {
   for (cc in 1:length(courses) ) {
     course <- courses[cc]
     working.data <- data[[course]]
-    initial.nS <- nrow(working.data)
+    initial.nS.before.time.cuts <- nrow(working.data)
+    # Remove time blocks
+    if ( is.na(minTime.allowed) == FALSE) {
+      working.data <- working.data[as.numeric(working.data$Time) >= minTime.allowed,]
+      working.data <- working.data[as.numeric(working.data$Time) <= maxTime.allowed,]
+    }
     # remove blanks
+    initial.nS <- nrow(working.data)
     working.data.noBlanks <- working.data[working.data$blanks <= numBlanks.allowed,]
     final.nS <- nrow(working.data.noBlanks)
     # Extract question information and grade questions.
@@ -196,9 +238,18 @@ data.select.Walkthrough <- function(pulled.data) {
     # Give names to questions
     colnames(data.alpha) <- paste0("Q",c(1:ncol(data.alpha)))
     # Number of student details.
-    nS.details <- data.frame(nS.initial = initial.nS,
-                             nS.final = final.nS,
-                             nS.lost.perc = (initial.nS-final.nS)/initial.nS)
+    if ( is.na(minTime.allowed) == FALSE) {
+      nS.details <- data.frame(nS.starting = initial.nS.before.time.cuts,
+                               nS.after.time.cuts = initial.nS,
+                               nS.after.blanks.cuts = final.nS,
+                               nS.lost.to.time.perc = (initial.nS.before.time.cuts-initial.nS)/initial.nS.before.time.cuts,
+                               nS.lost.to.blanks.perc = (initial.nS-final.nS)/initial.nS)
+    }
+    if ( is.na(minTime.allowed) == TRUE) {
+      nS.details <- data.frame(nS.starting = initial.nS,
+                               nS.after.blanks.cuts = final.nS,
+                               nS.lost.to.blanks.perc = (initial.nS-final.nS)/initial.nS)
+    }
 
 
     # Format return

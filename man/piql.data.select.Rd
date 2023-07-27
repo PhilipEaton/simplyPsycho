@@ -10,6 +10,8 @@ piql.data.select(
   MCMR.items = c(15:20),
   courses = 1,
   numBlanks.allowed = 0,
+  minTime.allowed = 3,
+  maxTime.allowed = 999,
   Matched = FALSE
 )
 }
@@ -53,7 +55,7 @@ the correct MCMR options marked 1 if they were selected and 0 if they were not.
 }
 \examples{
 # Using Sample data in simplyPsycho
-temp.data <- piql.data.select(simplySampleData, courses = 1, numBlanks.allowed = 0, MCMR.items = NA)
+temp.data <- piql.data.select(simplySampleData)
 data.alpha <- temp.data$data.alpha
 data.num <- temp.data$data.num
 # Check number of student removed. Should be less than 10\%.

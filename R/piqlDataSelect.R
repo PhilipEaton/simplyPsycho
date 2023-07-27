@@ -24,6 +24,11 @@
 #'
 #' @param numBlanks.allowed (default = 0) Number of blanks allowed in the resulting data.
 #'
+#' @param minTime.allowed (default = NA) If NA, then no time cutting will be done. If not NA,
+#' then data will be constrained between the two times minTime.allowed and maxTime.allowed
+#'
+#' @param maxTime.allowed (default = 999) Max time allowed for students if time cutting is enabled.
+#'
 #' @param Matched (Default = FALSE). If TRUE, only matching student IDs will be extracted
 #' across all courses.
 #'
@@ -39,14 +44,14 @@
 #'
 #' @examples
 #' # Using Sample data in simplyPsycho
-#' temp.data <- piql.data.select(simplySampleData, courses = 1, numBlanks.allowed = 0, MCMR.items = NA)
+#' temp.data <- piql.data.select(simplySampleData)
 #' data.alpha <- temp.data$data.alpha
 #' data.num <- temp.data$data.num
 #' # Check number of student removed. Should be less than 10%.
 #' temp.data$nS.details
-piql.data.select <- function(pulled.PIQL.data, MCMR.grading = "Dichotomous", MCMR.items = c(15:20), courses = 1, numBlanks.allowed = 0, Matched = FALSE) {
+piql.data.select <- function(pulled.PIQL.data, MCMR.grading = "Dichotomous", MCMR.items = c(15:20), courses = 1, numBlanks.allowed = 0, minTime.allowed = NA, maxTime.allowed = 999, Matched = FALSE) {
   PIQL.data <- pulled.PIQL.data$courses
-  answerKey <- pulled.PIQL.data$answerkey
+  answerKey <- t(data.frame(noquote(pulled.PIQL.data$answerkey)))
   courseList <- pulled.PIQL.data$courseList
   for (cc in 1:length(courses)) {
     if (nchar(courses[cc]) > 2) {
@@ -75,9 +80,17 @@ piql.data.select <- function(pulled.PIQL.data, MCMR.grading = "Dichotomous", MCM
     if (length(courses)==1) {stop("Need more than one course to match data.")
     } else {
       PIQL.data[[courses[1]]] <- PIQL.data[[courses[1]]][PIQL.data[[courses[1]]]$blanks<=numBlanks.allowed,]
+      if ( is.na(minTime.allowed) == FALSE ) {
+        PIQL.data[[courses[1]]] <- PIQL.data[[courses[1]]][as.numeric(PIQL.data[[courses[1]]]$Time) >= minTime.allowed,]
+        PIQL.data[[courses[1]]] <- PIQL.data[[courses[1]]][as.numeric(PIQL.data[[courses[1]]]$Time) <= maxTime.allowed,]
+      }
       temp.student.list <- PIQL.data[[courses[1]]]$Student.Code
       for (ss in 2:length(courses)) {
         PIQL.data[[courses[ss]]] <- PIQL.data[[courses[ss]]][PIQL.data[[courses[ss]]]$blanks<=numBlanks.allowed,]
+        if ( is.na(minTime.allowed) == FALSE ) {
+          PIQL.data[[courses[ss]]] <- PIQL.data[[courses[ss]]][as.numeric(PIQL.data[[courses[ss]]]$Time) >= minTime.allowed,]
+          PIQL.data[[courses[ss]]] <- PIQL.data[[courses[ss]]][as.numeric(PIQL.data[[courses[ss]]]$Time) <= maxTime.allowed,]
+        }
         temp.student.list <- temp.student.list[na.omit(match(PIQL.data[[courses[ss]]]$Student.Code,temp.student.list))]
       }
     }
@@ -102,8 +115,14 @@ piql.data.select <- function(pulled.PIQL.data, MCMR.grading = "Dichotomous", MCM
   for (cc in 1:length(courses) ) {
     course <- as.numeric(courses[cc])
     working.data <- PIQL.data[[course]]
-    initial.nS <- nrow(working.data)
+    initial.nS.before.time.cuts <- nrow(working.data)
+    # Remove time blocks
+    if ( is.na(minTime.allowed) == FALSE) {
+      working.data <- working.data[as.numeric(working.data$Time) >= minTime.allowed,]
+      working.data <- working.data[as.numeric(working.data$Time) <= maxTime.allowed,]
+    }
     # remove blanks
+    initial.nS <- nrow(working.data)
     working.data.noBlanks <- working.data[working.data$blanks <= numBlanks.allowed,]
     final.nS <- nrow(working.data.noBlanks)
     # Extract question information and grade questions.
@@ -185,9 +204,19 @@ piql.data.select <- function(pulled.PIQL.data, MCMR.grading = "Dichotomous", MCM
     # Give names to questions
     colnames(data.alpha) <- paste0("Q",c(1:ncol(data.alpha)))
     # Number of student details.
-    nS.details <- data.frame(nS.initial = initial.nS,
-                             nS.final = final.nS,
-                             nS.lost.perc = (initial.nS-final.nS)/initial.nS)
+    if ( is.na(minTime.allowed) == FALSE) {
+      nS.details <- data.frame(nS.starting = initial.nS.before.time.cuts,
+                               nS.after.time.cuts = initial.nS,
+                               nS.after.blanks.cuts = final.nS,
+                               nS.lost.to.time.perc = (initial.nS.before.time.cuts-initial.nS)/initial.nS.before.time.cuts,
+                               nS.lost.to.blanks.perc = (initial.nS-final.nS)/initial.nS)
+    }
+    if ( is.na(minTime.allowed) == TRUE) {
+      nS.details <- data.frame(nS.starting = initial.nS,
+                               nS.after.blanks.cuts = final.nS,
+                               nS.lost.to.blanks.perc = (initial.nS-final.nS)/initial.nS)
+    }
+
 
 
     # Format return
