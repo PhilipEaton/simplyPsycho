@@ -23,5 +23,7 @@ documentation for the formatting extected for student data.
 import.from.computer()
 
 # Follow the prompts.
+# Data should be formatted in the same manner as simplySampleData01 available
+# in the simplyPsycho Github repository (https://github.com/PhilipEaton/simplyPsycho).
 Read in file from computer and pull the last letters to check file type.
 }
