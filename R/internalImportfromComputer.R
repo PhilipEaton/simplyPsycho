@@ -20,6 +20,8 @@
 #' import.from.computer()
 #'
 #' # Follow the prompts.
+#' # Data should be formatted in the same manner as simplySampleData01 available
+#' # in the simplyPsycho Github repository (https://github.com/PhilipEaton/simplyPsycho).
 
 import.from.computer <- function() {
   return.master <- list()
@@ -49,7 +51,7 @@ import.from.computer <- function() {
             # Add course to the return.
             return.master <- build.psycho.datafile(return.master,temp.files, new.course.name = prompt.course,
                                                    new.term = prompt.term, answerKey = answerKey)
-            } else if (typeof(answerKey) == "character") { print("Answer key was already installed. No changes were made.\n\n\n")
+            } else if (is.null(answerKey) == FALSE) { print("Answer key was already installed. No changes were made.\n\n\n")
             } else {
               if (dim(temp.files)[1] == 1) {
                 answerKey <- temp.files[1,]
@@ -80,7 +82,7 @@ import.from.computer <- function() {
           # Add course to the return.
           return.master <- build.psycho.datafile(return.master,temp.files, new.course.name = prompt.course,
                                                  new.term = prompt.term, answerKey = answerKey)
-        } else if (typeof(answerKey) == "character") { print("Answer key was already installed. No changes were made.\n\n\n")
+        } else if (is.null(answerKey) == FALSE) { print("Answer key was already installed. No changes were made.\n\n\n")
         } else {
           if (dim(temp.files)[1] == 2) {
             answerKey <- temp.files[2,]
@@ -111,7 +113,7 @@ import.from.computer <- function() {
         # Add course to the return.
         return.master <- build.psycho.datafile(return.master,temp.files, new.course.name = prompt.course,
                                                new.term = prompt.term, answerKey = answerKey)
-      } else if (typeof(answerKey) == "character") { cat("Answer key was already installed. No changes were made.\n\n\n")
+      } else if (is.null(answerKey) == FALSE) { cat("Answer key was already installed. No changes were made.\n\n\n")
       } else {
         if (dim(temp.files)[1] == 2) {
           answerKey <- temp.files[2,]
