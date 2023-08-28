@@ -10,7 +10,7 @@ piql.data.select(
   MCMR.items = c(15:20),
   courses = 1,
   numBlanks.allowed = 0,
-  minTime.allowed = 3,
+  minTime.allowed = NA,
   maxTime.allowed = 999,
   Matched = FALSE
 )
@@ -30,6 +30,11 @@ If MCMR.grading = "FourScale", then MCMR items will be graded o the 4 scale:
 \item{MCMR.items}{Which items are MCMR. Defaulted to PIQL (15 through 20).}
 
 \item{numBlanks.allowed}{(default = 0) Number of blanks allowed in the resulting data.}
+
+\item{minTime.allowed}{(default = NA) If NA, then no time cutting will be done. If not NA,
+then data will be constrained between the two times minTime.allowed and maxTime.allowed}
+
+\item{maxTime.allowed}{(default = 999) Max time allowed for students if time cutting is enabled.}
 
 \item{Matched}{(Default = FALSE). If TRUE, only matching student IDs will be extracted
 across all courses.}
