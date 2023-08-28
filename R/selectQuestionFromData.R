@@ -23,7 +23,7 @@
 #' temp.data <- piql.data.select(simplySampleData, courses = c(1,2))
 #' temp.data <- select.questions(temp.data)
 
-select.questions <- function(selected.data, selected.questions = NULL) {
+select.questions <- function(selected.data, selected.questions = NULL, sort.selected.questions = FALSE) {
   # Find course numbers for input data
   return.data <- selected.data
   temp.names <- names(selected.data)[-c(length(names(selected.data))-1,length(names(selected.data)))]
@@ -55,9 +55,14 @@ select.questions <- function(selected.data, selected.questions = NULL) {
     }
     # ----------------------------------- #
     # Update current data
-
-    return.data[[temp.data.nums[cc]]] <- data.alpha.cc[,sort(match(selected.questions.cc, colnames(data.alpha.cc)))]
-    return.data[[temp.data.nums[cc]+1]] <- data.numeric.cc[,sort(match(selected.questions.cc, colnames(data.numeric.cc)))]
+    if (sort.selected.questions == FALSE) {
+      return.data[[temp.data.nums[cc]]] <- data.alpha.cc[,match(selected.questions.cc, colnames(data.alpha.cc))]
+      return.data[[temp.data.nums[cc]+1]] <- data.numeric.cc[,match(selected.questions.cc, colnames(data.numeric.cc))]
+    }
+    if (sort.selected.questions == TRUE) {
+      return.data[[temp.data.nums[cc]]] <- data.alpha.cc[,sort(match(selected.questions.cc, colnames(data.alpha.cc)))]
+      return.data[[temp.data.nums[cc]+1]] <- data.numeric.cc[,sort(match(selected.questions.cc, colnames(data.numeric.cc)))]
+    }
   }
 
   return(return.data)
